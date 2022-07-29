@@ -393,6 +393,7 @@ import {
   getDatasetsByTplId,
   saveLuckySheetTpl
 } from "@/apis/index"
+
 export default {
   components: {
     LuckySheet,
@@ -407,7 +408,7 @@ export default {
       dialogVisible: false,
       extendOptions: [{
         label: '向下扩展',
-        value: 2
+        value: 3
       }],
       aggregateTypeOptions: [{
         label: '列表',
@@ -761,8 +762,6 @@ export default {
       var cellFormData = this.extraCustomCellConfigs[
         range[0].row[0] + "_" + range[0].column[0]
       ]
-
-      // debugger
 
       // 编辑查看时的报表设置
       if (cellFormData) {
@@ -1190,6 +1189,7 @@ export default {
 
           configs.extraCustomCellConfigs = extraCustomCellConfigs
           configs.tplId = this.tplId
+          // configs.id = thi
           configs.isParamMerge = this.isParamMerge ? 1 : 2
 
           if (!cellData.length) return this.$message.error('报表内容不能为空')
@@ -1248,7 +1248,7 @@ export default {
       overflow-y: auto;
       .dataset-item {
         display: inline-block;
-        margin: 10px;
+        margin: 0 2px;
       }
     }
   }
