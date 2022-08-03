@@ -32,6 +32,14 @@ export const addDataSource = data => {
   });
 };
 
+export const connectionTest = data => {
+  return request({
+    url: "/datasource/connectionTest",
+    method: "post",
+    data
+  });
+};
+
 export const getDataSourcesByKeyword = (params, data) => {
   return request({
     url: "/datasource/getDataSourcesByKeyword",

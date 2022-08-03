@@ -51,23 +51,22 @@
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="pageInfo.total" />
     </div>
-
     <el-dialog class="dialog"
                title="新增"
                :visible.sync="visible">
+      <el-input class="title-input"
+                v-model="form.businessName"
+                placeholder="数据库业务名" />
       <el-form :model="form"
                :rules="rules"
                ref="ruleForm"
-               label-width="120px">
+               label-width="120px"
+               label-position="left"
+               inline>
         <el-form-item label="数据库"
                       prop="databaseName">
           <el-input class="form-input"
                     v-model="form.databaseName" />
-        </el-form-item>
-        <el-form-item label="数据库业务名"
-                      prop="businessName">
-          <el-input class="form-input"
-                    v-model="form.businessName" />
         </el-form-item>
         <el-form-item label="数据库类型"
                       prop="typeLabel">
@@ -99,6 +98,12 @@
                     v-model="form.password" />
         </el-form-item>
       </el-form>
+
+      <textarea type="textarea"
+                class="url-tag"
+                v-model="jdbcUrl"
+                readonly />
+
       <span slot="footer"
             class="dialog-footer">
         <el-button @click="visible = false">取 消</el-button>
@@ -146,11 +151,16 @@ export default {
     }
 
     return {
+      jdbcUrlMap: {
+        MySQL: 'jdbc:mysql://localhost:port/databaseName?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true',
+        Oracle: 'jdbc:oracle:thin:@localhost:port:databaseName',
+        SqlServer: 'jdbc:sqlserver://localhost:port;databaseName=databaseName'
+      },
       options: [{
         label: 'MySQL',
         value: 0
       }, {
-        label: 'sql-server',
+        label: 'SqlServer',
         value: 1
       }, {
         label: 'oracle',
@@ -163,11 +173,10 @@ export default {
       form: {
         databaseName: '',
         businessName: '',
-        typeLabel: '',
-        type: -1,
+        typeLabel: 'MySQL',
+        type: 0,
         url: '',
         port: '',
-        jdbcUrl: '',
         username: '',
         password: ''
       },
@@ -207,6 +216,29 @@ export default {
         pageSize: 10,
         pageSizes: [5, 10, 20, 50],
         total: 0
+      }
+    }
+  },
+  computed: {
+    jdbcUrl () {
+      if (!this.form.typeLabel) {
+        return this.jdbcUrlMap[this.form.typeLabel]
+      }
+
+      if (!this.form.url && !this.form.port && !this.form.databaseName) {
+        return this.jdbcUrlMap[this.form.typeLabel]
+      }
+
+      if (this.form.url) {
+        return this.jdbcUrlMap[this.form.typeLabel].replace(/localhost/, this.form.url)
+      }
+
+      if (this.form.port) {
+        return this.jdbcUrlMap[this.form.typeLabel].replace(/port/, this.form.port)
+      }
+
+      if (this.form.databaseName) {
+        return this.jdbcUrlMap[this.form.typeLabel].replace(/databaseName/, this.form.databaseName)
       }
     }
   },
@@ -260,7 +292,7 @@ export default {
       }
 
       getDataSourcesByKeyword(params, pageInfo).then((res) => {
-        this.table = res.databaseList
+        this.table = res.datasourceList
         this.pageInfo.pageIndex = res.pageInfo.pageIndex
 
         this.table.forEach((item) => {
@@ -281,6 +313,8 @@ export default {
       addDataSource(params)
     },
     submit () {
+      if (!this.form.businessName) return this.$message.error('业务名不能为空')
+
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
           this.addDataSource()
@@ -318,12 +352,30 @@ export default {
   }
 
   .dialog {
-    .el-form-item {
-      display: inline-block;
+    .form-input,
+    .title-input {
+      width: 150px;
     }
 
-    .form-input {
-      width: 150px;
+    .title-input >>> .el-input__inner {
+      margin-bottom: 10px;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+    }
+
+    .url-tag {
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+      background-color: #f0f9eb;
+      color: #67c23a;
+      width: 100%;
+      white-space: wrap;
+      padding: 8px 16px;
+      border-radius: 4px;
+      resize: none;
     }
   }
 }
