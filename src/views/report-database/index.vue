@@ -11,7 +11,8 @@
                        @select="selectDatabase"
                        v-model="type"
                        placeholder="数据库类型" />
-      <el-button type="primary" plain>查询
+      <el-button type="primary"
+                 plain>查询
       </el-button>
     </div>
 
@@ -21,26 +22,45 @@
         </el-button>
         <el-button type="danger">批量删除</el-button>
       </div>
-      <div class="clearfix"></div>
-      <el-table border :data="table">
-        <el-table-column prop="id" label="id" />
-        <el-table-column prop="databaseName"
+      <div class="clearFloat"></div>
+      <el-table border
+                :data="table">
+        <el-table-column align="center"
+                         prop="id"
+                         label="id" />
+        <el-table-column align="center"
+                         prop="databaseName"
                          label="数据库" />
-        <el-table-column prop="businessName"
+        <el-table-column align="center"
+                         prop="businessName"
                          label="数据库业务名" />
-        <el-table-column prop="typeLabel"
+        <el-table-column align="center"
+                         prop="typeLabel"
                          label="数据库类型" />
-        <el-table-column prop="jdbcUrl"
-                         label="数据库链接" />
-        <el-table-column>
-          <template>
+        <el-table-column align="center"
+                         label="数据库链接">
+          <template slot-scope="scope">
+            <el-tooltip effect="dark"
+                        :content="scope.row.jdbcUrl"
+                        placement="top">
+              <span class="ellipsis-line"
+                    :style="{'--ellipsisWidth': '100px'}">{{ scope.row.jdbcUrl }}</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column align="center"
+                         label="操作">
+          <template slot-scope="scope">
             <el-link type="success">查看</el-link>
+            <el-link type="warning"
+                     @click="editDataSource(scope)">编辑</el-link>
             <el-link type="danger">删除</el-link>
           </template>
         </el-table-column>
       </el-table>
 
-      <el-pagination class="pagination" background
+      <el-pagination class="pagination"
+                     background
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="pageInfo.pageIndex"
@@ -48,21 +68,28 @@
                      :page-size="pageInfo.pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="pageInfo.total" />
+      <div class="clearFloat"></div>
     </div>
-    <el-dialog class="dialog" title="新增"
+
+    <el-dialog class="dialog"
+               title="新增"
                :visible.sync="visible">
       <el-input class="title-input"
                 v-model="form.businessName"
                 placeholder="数据库业务名" />
-      <el-form :model="form" :rules="rules"
-               ref="ruleForm" label-width="120px"
-               label-position="left" inline>
+      <el-form :model="form"
+               :rules="rules"
+               ref="ruleForm"
+               label-width="100px"
+               label-position="left"
+               inline>
         <el-form-item label="数据库"
                       prop="databaseName">
           <el-input class="form-input"
                     v-model="form.databaseName" />
         </el-form-item>
-        <el-form-item label="数据库类型" prop="type">
+        <el-form-item label="数据库类型"
+                      prop="type">
           <el-select v-model="form.type"
                      class="form-input">
             <el-option v-for="(item, index) of options"
@@ -72,36 +99,46 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="数据库地址" prop="url">
+        <el-form-item label="主机"
+                      prop="localhost">
           <el-input class="form-input"
-                    v-model="form.url" />
+                    v-model="form.localhost" />
         </el-form-item>
-        <el-form-item label="数据库端口" prop="port">
+        <el-form-item label="端口"
+                      prop="port">
           <el-input class="form-input"
                     v-model.number="form.port" />
         </el-form-item>
         <el-form-item label="登录用户名"
                       prop="username">
           <el-input class="form-input"
-                    v-model="form.username" />
+                    v-model="form.username"
+                    clearable />
         </el-form-item>
         <el-form-item label="登录密码"
                       prop="password">
           <el-input class="form-input"
-                    v-model="form.password" />
+                    v-model="form.password"
+                    type="password"
+                    show-password
+                    clearable />
         </el-form-item>
       </el-form>
 
-      <textarea type="textarea" class="url-tag"
-                v-model="form.jdbcUrl" readonly />
+      <textarea type="textarea"
+                class="url-tag"
+                v-model="form.jdbcUrl"
+                readonly />
 
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer"
+            class="dialog-footer">
         <el-button @click="visible = false">取 消
         </el-button>
         <el-button type="warning"
-                   @click="connectionTest">测试 连接
+                   @click="connectionTest">测 试 连 接
         </el-button>
-        <el-button type="primary" @click="submit">
+        <el-button type="primary"
+                   @click="submit">
           确 定</el-button>
       </span>
     </el-dialog>
@@ -160,7 +197,7 @@ export default {
         databaseName: '',
         businessName: '',
         type: 0,
-        url: '',
+        localhost: '',
         jdbcUrl: '',
         port: '',
         username: '',
@@ -168,25 +205,25 @@ export default {
       },
       rules: {
         databaseName: [{
-          validator: databaseCheck, trigger: 'change'
-        }, {
           required: true, message: '数据库不能为空', trigger: 'blur'
+        }, {
+          validator: databaseCheck, trigger: 'change'
         }],
         type: [{
           required: true, message: '类型不能为空', trigger: 'blur'
         }],
-        url: [{
+        localhost: [{
           required: true, message: '地址不能为空', trigger: 'blur'
         }],
         port: [{
-          validator: portCheck, trigger: 'change'
-        }, {
           required: true, message: '端口不能为空', trigger: 'blur'
+        }, {
+          validator: portCheck, trigger: 'change'
         }],
         username: [{
-          validator: usernameCheck, trigger: 'change'
-        }, {
           required: true, message: '用户名不能为空', trigger: 'blur'
+        }, {
+          validator: usernameCheck, trigger: 'change'
         }],
         password: [{
           required: true, message: '密码不能为空', trigger: 'blur'
@@ -207,7 +244,7 @@ export default {
       },
       immediate: true
     },
-    'form.url': {
+    'form.localhost': {
       handler (newVal) {
         this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/localhost/, newVal ? newVal : 'localhost').replace(/port/, this.form.port ? this.form.port : 'port').replace(/databaseName/, this.form.databaseName ? this.form.databaseName : 'databaseName')
       },
@@ -215,13 +252,13 @@ export default {
     },
     'form.port': {
       handler (newVal) {
-        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/localhost/, this.form.url ? this.form.url : 'localhost').replace(/port/, newVal ? newVal : 'port').replace(/databaseName/, this.form.databaseName ? this.form.databaseName : 'databaseName')
+        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/localhost/, this.form.localhost ? this.form.localhost : 'localhost').replace(/port/, newVal ? newVal : 'port').replace(/databaseName/, this.form.databaseName ? this.form.databaseName : 'databaseName')
       },
       immediate: true
     },
     'form.databaseName': {
       handler (newVal) {
-        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/localhost/, this.form.url ? this.form.url : 'localhost').replace(/port/, this.form.port ? this.form.port : 'port').replace(/databaseName/, newVal ? newVal : 'databaseName')
+        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/localhost/, this.form.localhost ? this.form.localhost : 'localhost').replace(/port/, this.form.port ? this.form.port : 'port').replace(/databaseName/, newVal ? newVal : 'databaseName')
       },
       immediate: true
     }
@@ -241,14 +278,13 @@ export default {
       }
     },
     selectDatabase (val) {
-      // debugger
       this.database = val.label
     },
     // 当前页的记录数
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
       this.pageInfo.pageSize = val
-      this.initData()
+      this.getDataSourcesByKeyword()
     },
     // 当前页
     handleCurrentChange (val) {
@@ -271,20 +307,35 @@ export default {
         pageSize: this.pageInfo.pageSize
       }
 
-      getDataSourcesByKeyword(params, pageInfo).then((res) => {
-        this.table = res.datasourceList
-        this.pageInfo.pageIndex = res.pageInfo.pageIndex
+      getDataSourcesByKeyword(params, pageInfo).then(({ datasourceList, pageInfo }) => {
+        this.table = datasourceList
+        this.pageInfo.pageIndex = pageInfo.pageIndex
+        this.pageInfo.total = pageInfo.totalSize
 
         this.table.forEach((item) => {
-          item.typeLabel = !item.type ? 'mysql' : item.type === 1 ? 'SQL-server' : 'oracle'
+          item.typeLabel = !item.type ? 'mysql' : item.type === 1 ? 'SQL-Server' : 'Oracle'
         })
       })
+    },
+    // 编辑数据源
+    editDataSource ({ row }) {
+      this.visible = true
+
+      this.form.businessName = row.businessName
+      this.form.databaseName = row.databaseName
+      this.form.type = row.type
+      this.form.localhost = row.localhost
+      this.form.port = parseInt(row.port)
+      this.form.username = row.username
+      this.form.password = row.password
     },
     addDataSource () {
       let params = {
         databaseName: this.form.databaseName,
         businessName: this.form.businessName,
         type: this.form.type,
+        localhost: this.form.localhost,
+        port: this.form.port,
         jdbcUrl: this.form.jdbcUrl,
         username: this.form.username,
         password: this.form.password
@@ -302,7 +353,9 @@ export default {
             type: this.form.type
           }
 
-          connectionTest(params)
+          connectionTest(params).then(() => {
+            this.$message.success('连接成功')
+          })
         } else {
           console.log('error submit!!')
           return false
@@ -343,9 +396,9 @@ export default {
       margin: 10px 0;
       float: right;
     }
-
-    .clearfix {
-      clear: both;
+    .pagination {
+      margin-top: 10px;
+      float: right;
     }
   }
 
@@ -375,6 +428,10 @@ export default {
       border-radius: 4px;
       resize: none;
     }
+  }
+
+  .clearFloat {
+    clear: both;
   }
 }
 </style>

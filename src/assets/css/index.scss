@@ -36,3 +36,11 @@
 .secondary-end {
   align-items: flex-end;
 }
+
+.ellipsis-line {
+  padding: 8px;
+  width: var(--ellipsisWidth);
+  overflow: hidden;
+  text-overflow: ellipsis; // 文本溢出显示省略号
+  white-space: nowrap; // 文本不会换行
+}
