@@ -129,7 +129,7 @@
 
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="visible = false">取 消
+        <el-button @click="handleCancel">取 消
         </el-button>
         <el-button type="warning"
                    @click="connectionTest">测 试 连 接
@@ -340,6 +340,17 @@ export default {
       }
 
       addDataSource(params)
+    },
+    handleCancel () {
+      this.visible = false
+      this.$refs['ruleForm'].resetFields()
+      this.form.businessName = ''
+      this.form.databaseName = ''
+      this.form.type = 0
+      this.form.localhost = ''
+      this.form.port = ''
+      this.form.username = ''
+      this.form.password = ''
     },
     connectionTest () {
       this.$refs['ruleForm'].validate((valid) => {

@@ -841,7 +841,7 @@ export default {
     handleCurrentChange: function (val) {
       this.sqlColumnTableData.tablePage.currentPage = val
     },
-    //sql语句列表修改当每页显示条数触发事件
+    // sql语句列表修改当每页显示条数触发事件
     handleSizeChange: function (val) {
       this.sqlColumnTableData.tablePage.pageSize = val
     },
