@@ -38,14 +38,11 @@
                          prop="typeLabel"
                          label="数据库类型" />
         <el-table-column align="center"
-                         label="数据库链接">
+                         label="数据库链接"
+                         show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-tooltip effect="dark"
-                        :content="scope.row.jdbcUrl"
-                        placement="top">
-              <span class="ellipsis-line"
-                    :style="{'--ellipsisWidth': '100px'}">{{ scope.row.jdbcUrl }}</span>
-            </el-tooltip>
+            <span class="ellipsis-line"
+                  :style="{'--ellipsisWidth': '100px'}">{{ scope.row.jdbcUrl }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center"
@@ -147,6 +144,7 @@
 
 <script>
 import { addDataSource, getDataSourcesByKeyword, connectionTest } from '@/apis/index'
+
 export default {
   data () {
     const databaseCheck = (rule, value, callback) => {
