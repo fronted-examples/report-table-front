@@ -11,13 +11,21 @@
     </section>
 
     <section class="content">
-      <el-card v-for="item of tableList"
-               :key="item">
-        <div class="card-header">
-          {{ item }}
-          <i class="el-icon-arrow-right"></i>
-        </div>
-      </el-card>
+      <el-collapse v-model="activeNames">
+        <el-collapse-item v-for="item of tableList"
+                          :key="item.tableName"
+                          :title="`表名：${item.tableName}`">
+          <el-table border
+                    :data="item.tableColumns">
+            <el-table-column align="center"
+                             label="字段名"
+                             prop="columnName" />
+            <el-table-column align="center"
+                             label="注释"
+                             prop="comment" />
+          </el-table>
+        </el-collapse-item>
+      </el-collapse>
     </section>
   </section>
 </template>
@@ -31,7 +39,8 @@ export default {
       dataSourceOptions: [],
       dataSourceId: '',
       dataSource: '',
-      tableList: []
+      tableList: [],
+      activeNames: ''
     }
   },
   created () {
@@ -87,16 +96,19 @@ export default {
     padding: 10px;
     height: calc(100vh - 80px);
     overflow: auto;
-    .el-card {
-      width: 60%;
+
+    >>> .el-collapse {
+      border: none;
+    }
+
+    >>> .el-collapse-item {
       margin: 10px 0;
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        i {
-          cursor: pointer;
-        }
-      }
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    >>> .el-collapse-item__header {
+      border: none;
+      text-indent: 10px;
     }
   }
 }
