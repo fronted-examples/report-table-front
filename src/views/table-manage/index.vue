@@ -78,9 +78,13 @@ export default {
 <style lang="scss" scoped>
 .table-manage {
   box-sizing: border-box;
-  padding: 10px;
+  padding: 10px 0;
+  .header {
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
   .content {
-    margin-top: 20px;
+    padding: 10px;
     height: calc(100vh - 80px);
     overflow: auto;
     .el-card {
