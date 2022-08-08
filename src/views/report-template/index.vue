@@ -52,6 +52,7 @@
                      :page-size="pageInfo.pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="pageInfo.total" />
+      <div class="clearfix"></div>
     </div>
 
     <el-dialog class="dialog"
@@ -293,6 +294,11 @@ export default {
   .body {
     .table-operate {
       margin: 10px 0;
+      float: right;
+    }
+
+    .pagination {
+      margin-top: 10px;
       float: right;
     }
 

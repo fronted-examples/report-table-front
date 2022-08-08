@@ -1,71 +1,131 @@
 <template>
   <section class="sql-server">
-    <el-input class="search" placeholder="表名、表业务名、数据库" prefix-icon="el-icon-search" v-model="keyword">
+    <el-input class="search"
+              placeholder="表名、表业务名、数据库"
+              prefix-icon="el-icon-search"
+              v-model="keyword">
     </el-input>
 
-    <el-button class="add-table" type="primary" plain @click="visible = true">添加表记录</el-button>
+    <el-button class="add-table"
+               type="primary"
+               plain
+               @click="visible = true">添加表记录</el-button>
     <div class="clear-float"></div>
 
-    <el-table class="table" :data="tableData" border>
-      <el-table-column prop="tableName" label="表名" />
-      <el-table-column prop="businessName" label="表业务名" />
-      <el-table-column prop="database" label="所属数据库" />
-      <el-table-column prop="mark" label="备注" />
+    <el-table class="table"
+              :data="tableData"
+              border>
+      <el-table-column prop="tableName"
+                       label="表名" />
+      <el-table-column prop="businessName"
+                       label="表业务名" />
+      <el-table-column prop="database"
+                       label="所属数据库" />
+      <el-table-column prop="mark"
+                       label="备注" />
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-link type="success" @click.stop="getDetail(scope)">查看</el-link>
+          <el-link type="success"
+                   @click.stop="getDetail(scope)">查看</el-link>
           <el-link type="danger">删除</el-link>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="visible" width="80vw">
-      <el-input class="search" v-model="tableName" placeholder="请输入表名" />
-      <el-input class="search" placeholder="表业务名" v-model="businessName"></el-input>
+    <el-pagination class="pagination"
+                   background
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"
+                   :current-page="pageInfo.pageIndex"
+                   :page-sizes="pageInfo.pageSizes"
+                   :page-size="pageInfo.pageSize"
+                   layout="total, sizes, prev, pager, next, jumper"
+                   :total="pageInfo.total" />
+    <div class="clearFloat"></div>
 
-      <el-input class="search" v-model="database" placeholder="所属数据库" />
+    <el-dialog :visible.sync="visible"
+               width="80vw">
+      <el-input class="search"
+                v-model="tableName"
+                placeholder="请输入表名" />
+      <el-input class="search"
+                placeholder="表业务名"
+                v-model="businessName"></el-input>
+
+      <el-input class="search"
+                v-model="database"
+                placeholder="所属数据库" />
 
       <div style="margin-top: 10px;">
         <el-button @click="moveUp">上移</el-button>
-        <el-button @click="delRow" type="danger" plain>删除字段</el-button>
+        <el-button @click="delRow"
+                   type="danger"
+                   plain>删除字段</el-button>
         <el-button @click="moveDown">下移</el-button>
-        <el-button @click="addRow" type="success" plain>插入数据</el-button>
-        <el-input-number v-model="num" :min="1" :max="10000" label="数据条目"></el-input-number>
+        <el-button @click="addRow"
+                   type="success"
+                   plain>插入数据</el-button>
+        <el-input-number v-model="num"
+                         :min="1"
+                         :max="10000"
+                         label="数据条目"></el-input-number>
       </div>
 
-      <el-table class="table" border :data="table" style="width: 100%" :key="itemKey">
-        <el-table-column v-for="(col, index) in cols" :key="index" align="center">
-          <template slot="header" slot-scope="scope">
-            <input ref="thInput" v-if="col.edited" class="table-input" placeholder="输入表头" v-model="col.title"
-              @blur="blurCol(col)" @change="blurCol(col)" />
+      <el-table class="table"
+                border
+                :data="table"
+                style="width: 100%"
+                :key="itemKey">
+        <el-table-column v-for="(col, index) in cols"
+                         :key="index"
+                         align="center">
+          <template slot="header"
+                    slot-scope="scope">
+            <input ref="thInput"
+                   v-if="col.edited"
+                   class="table-input"
+                   placeholder="输入表头"
+                   v-model="col.title"
+                   @blur="blurCol(col)"
+                   @change="blurCol(col)" />
             <span>
               <em v-if="!col.edited">{{ cols[index].title }}</em>
             </span>
           </template>
           <template slot-scope="scope">
-            <span class="table-span" v-if="!scope.row[col.title].edited" @click="editRow(col.title, scope.row.index)">{{
+            <span class="table-span"
+                  v-if="!scope.row[col.title].edited"
+                  @click="editRow(col.title, scope.row.index)">{{
                 scope.row[col.title][col.title]
             }}</span>
-            <el-autocomplete class="table-select" v-if="col.title === '类型' && scope.row[col.title].edited"
-              :ref="`tdInput-${col.title}-${scope.row.index}`" :fetch-suggestions="querySearch"
-              v-model="scope.row[col.title][col.title]" @focus="handleFocus(scope.row.index)"
-              @select="(value) => selectOption(scope, col.title, value, scope.row.index)">
+            <el-autocomplete class="table-select"
+                             v-if="col.title === '类型' && scope.row[col.title].edited"
+                             :ref="`tdInput-${col.title}-${scope.row.index}`"
+                             :fetch-suggestions="querySearch"
+                             v-model="scope.row[col.title][col.title]"
+                             @focus="handleFocus(scope.row.index)"
+                             @select="(value) => selectOption(scope, col.title, value, scope.row.index)">
             </el-autocomplete>
             <input v-if="col.title !== '类型' && !checkboxes.includes(col.title) && scope.row[col.title].edited"
-              class="table-input" :ref="`tdInput-${col.title}-${scope.row.index}`"
-              :value="scope.row[col.title][col.title]" @focus="handleFocus(scope.row.index)"
-              @blur="(e) => handleBlur(scope, col.title, scope.row.index, e)"
-              @change="(e) => inputValue(scope, col.title, e, scope.row.index)" />
+                   class="table-input"
+                   :ref="`tdInput-${col.title}-${scope.row.index}`"
+                   :value="scope.row[col.title][col.title]"
+                   @focus="handleFocus(scope.row.index)"
+                   @blur="(e) => handleBlur(scope, col.title, scope.row.index, e)"
+                   @change="(e) => inputValue(scope, col.title, e, scope.row.index)" />
 
-            <input type="checkbox" class="table-checkbox" :ref="`tdInput-${col.title}-${scope.row.index}`"
-              v-if="checkboxes.includes(col.title)"
-              @change="(e) => changeCheck(scope, col.title, e, scope.row.index)" />
+            <input type="checkbox"
+                   class="table-checkbox"
+                   :ref="`tdInput-${col.title}-${scope.row.index}`"
+                   v-if="checkboxes.includes(col.title)"
+                   @change="(e) => changeCheck(scope, col.title, e, scope.row.index)" />
           </template>
         </el-table-column>
       </el-table>
       <span slot="footer">
         <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="addTable">确 定</el-button>
+        <el-button type="primary"
+                   @click="addTable">确 定</el-button>
       </span>
     </el-dialog>
   </section>
@@ -233,7 +293,13 @@ export default {
       colsIndex: 0,
       itemKey: null, // 强制让表格刷新一次
       num: 1,
-      rowIndex: 0
+      rowIndex: 0,
+      pageInfo: {
+        pageIndex: 1,
+        pageSize: 10,
+        pageSizes: [5, 10, 20, 50],
+        total: 0
+      }
     }
   },
   mounted () {
@@ -241,16 +307,34 @@ export default {
   },
   methods: {
     querySearch (queryString, cb) {
-      var results = queryString ? this.options.filter(this.createFilter(queryString)) : this.options;
+      var results = queryString ? this.options.filter(this.createFilter(queryString)) : this.options
       // 调用 callback 返回建议列表的数据
-      cb(results);
+      cb(results)
     },
     createFilter (queryString) {
       return (options) => {
-        return (options.label.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      };
+        return (options.label.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
     },
-    getDetail ({row}) {
+    // 当前页的记录数
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+      this.pageInfo.pageSize = val
+      this.getTables()
+    },
+    // 当前页
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+      this.pageInfo.pageIndex = val
+
+      this.$router.replace({
+        path: this.$route.path,
+        query: {
+          page: val
+        }
+      })
+    },
+    getDetail ({ row }) {
 
       window.open(this.$router.resolve({
         name: "TableDetail",
@@ -273,8 +357,8 @@ export default {
       })
     },
     addCol () {
-      this.cols.push({ title: '', edited: true });
-      this.colsIndex = this.cols.length - 1;
+      this.cols.push({ title: '', edited: true })
+      this.colsIndex = this.cols.length - 1
       this.itemKey = Math.random()
       this.$nextTick(() => {
         this.$refs.thInput[0].focus()
@@ -285,15 +369,15 @@ export default {
        * bug 数据更新了 页面没更新数据 table拿到的数据还是以前的老数据，采用了给table加个key的方法解决
        * 让 table 重新加载 然后刷新数据
       */
-      const data = JSON.parse(JSON.stringify(this.cols));
+      const data = JSON.parse(JSON.stringify(this.cols))
       data.forEach((element, ind) => {
         if (index === ind) {
           data.splice(index, 1)
         }
-      });
-      console.log("删除后的值", this.cols);
+      })
+      console.log("删除后的值", this.cols)
       this.$set(this, 'cols', data)
-      this.colsIndex = this.cols.length - 1;
+      this.colsIndex = this.cols.length - 1
       this.itemKey = Math.random()
     },
     addRow () {
@@ -327,7 +411,7 @@ export default {
       }
     },
     blurCol (col) {
-      if (!col.title) return this.$message.error('请输入表头');
+      if (!col.title) return this.$message.error('请输入表头')
       col.edited = false
 
       if (this.table.length) {
@@ -378,7 +462,7 @@ export default {
     moveUp () {
       if (this.rowIndex === 0) return
       console.log('rowIndex: ', this.rowIndex)
-      this.table.splice(this.rowIndex, 1, ...this.table.splice(this.rowIndex - 1, 1, this.table[this.rowIndex]));
+      this.table.splice(this.rowIndex, 1, ...this.table.splice(this.rowIndex - 1, 1, this.table[this.rowIndex]))
       this.table[this.rowIndex - 1].index = this.rowIndex - 1
       this.table[this.rowIndex].index = this.rowIndex
 
@@ -396,7 +480,7 @@ export default {
     },
     moveDown () {
       if (this.rowIndex === this.table.length - 1) return
-      this.table.splice(this.rowIndex, 1, ...this.table.splice(this.rowIndex + 1, 1, this.table[this.rowIndex]));
+      this.table.splice(this.rowIndex, 1, ...this.table.splice(this.rowIndex + 1, 1, this.table[this.rowIndex]))
       this.table[this.rowIndex + 1].index = this.rowIndex + 1
       this.table[this.rowIndex].index = this.rowIndex
 
@@ -413,13 +497,19 @@ export default {
       addTable(params)
     },
     getTables () {
-      let params = {
+      const params = {
         keyword: this.keyword
       }
 
-      getTables(params).then((res) => {
-        console.log('res: ', res)
-        this.tableData = res.tableList
+      const pageInfo = {
+        pageIndex: this.pageInfo.pageIndex,
+        pageSize: this.pageInfo.pageSize
+      }
+
+      getTables(params, pageInfo).then(({ tableList, pageInfo }) => {
+        this.tableData = tableList
+        this.pageInfo.pageIndex = pageInfo.pageIndex
+        this.pageInfo.total = pageInfo.totalSize
       })
     }
   }
@@ -448,12 +538,12 @@ export default {
   margin-top: 10px;
 }
 
-.table>>>.el-input__inner {
+.table >>> .el-input__inner {
   height: 25px;
   line-height: 25px;
 }
 
-.table>>>.el-input__icon {
+.table >>> .el-input__icon {
   line-height: 25px;
 }
 
@@ -506,10 +596,15 @@ em {
   border-color: #409eff;
 }
 
-.table-select>>>.el-input .el-input__inner {
+.table-select >>> .el-input .el-input__inner {
   border-radius: 0;
   border: none;
-  border-bottom: 0.0625rem solid #DCDFE6;
+  border-bottom: 0.0625rem solid #dcdfe6;
   background-color: transparent;
+}
+
+.pagination {
+  margin-top: 10px;
+  float: right;
 }
 </style>

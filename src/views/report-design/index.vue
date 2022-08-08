@@ -407,6 +407,9 @@ export default {
       datasets: [], // 数据集
       dialogVisible: false,
       extendOptions: [{
+        label: '不扩展',
+        value: 1
+      }, {
         label: '向下扩展',
         value: 3
       }],
