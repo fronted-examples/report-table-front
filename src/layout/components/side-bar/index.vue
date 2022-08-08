@@ -1,15 +1,23 @@
 <template>
-  <el-menu default-active="0" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff"
-    active-text-color="#ffd04b">
-    <el-submenu v-for="(menu, index) in menus" :key="index" :index="(index + 1).toString()"
-      @click.native.stop="toTarget(menu)">
+  <el-menu default-active="0"
+           class="el-menu-vertical-demo"
+           background-color="#545c64"
+           text-color="#fff"
+           active-text-color="#ffd04b">
+    <el-submenu v-for="(menu, index) in menus"
+                :key="index"
+                :index="(index + 1).toString()"
+                @click.native.stop="toTarget(menu)">
       <template slot="title">
         <i :class="menu.icon"></i>
         <span>{{ menu.label }}</span>
       </template>
-      <el-menu-item-group v-if="menu.children.length">
-        <el-menu-item :index="(childIndex + 1).toString()" v-for="(child, childIndex) in menu.children"
-          @click.native.stop="toTarget(child)" :key="childIndex">
+      <el-menu-item-group
+                          v-if="menu.children.length">
+        <el-menu-item :index="(childIndex + 1).toString()"
+                      v-for="(child, childIndex) in menu.children"
+                      @click.native.stop="toTarget(child)"
+                      :key="childIndex">
           <i :class="child.icon"></i>
           {{ child.label }}
         </el-menu-item>
@@ -61,8 +69,16 @@ export default {
           icon: "el-icon-user",
           name: 'StatisticsYears'
         }]
+      }, {
+        label: '图书管理',
+        icon: 'el-icon-setting',
+        children: [{
+          label: '图书',
+          icon: 'el-icon-s-data',
+          name: 'BookReader'
+        }]
       }]
-    };
+    }
   },
   methods: {
     toTarget (item) {

@@ -10,6 +10,7 @@ import ReportDatabase from '@/views/report-database/index'
 import ReportTemplate from '@/views/report-template/index'
 import ReportDesign from '@/views/report-design/index'
 import ReportPreview from '@/views/report-preview/index'
+import BookReader from '@/views/book-reader/index'
 
 Vue.use(Router)
 
@@ -45,6 +46,16 @@ export default new Router({
         path: '/report-template',
         name: 'ReportTemplate',
         component: ReportTemplate
+      }]
+    },
+    {
+      path: '/book',
+      component: Layout,
+      redirect: '/book/book-reader',
+      children: [{
+        path: '/book-reader',
+        name: 'BookReader',
+        component: BookReader
       }]
     },
     {
