@@ -55,3 +55,7 @@
   -webkit-line-clamp: var(--multiClamp);
   -webkit-box-orient: vertical;
 }
+
+.clearFloat {
+  clear: both;
+}

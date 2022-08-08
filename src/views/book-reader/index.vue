@@ -1,29 +1,34 @@
 <template>
   <section class="book-reader">
-    <div class="title-wrapper">
-      <div class="icon-wrapper">
+    <div
+         class="title-wrapper flex-row main-between secondary-center">
+      <div
+           class="icon-wrapper flex-row main-center secondary-center">
         <span class="icon-menu icon"></span>
       </div>
 
-      <div class="icon-wrapper">
+      <div
+           class="icon-wrapper flex-row main-center secondary-center">
         <span class="icon-progress icon"></span>
       </div>
 
-      <div class="icon-wrapper">
+      <div
+           class="icon-wrapper flex-row main-center secondary-center">
         <span class="icon-theme icon"></span>
       </div>
 
-      <div class="icon-wrapper">
+      <div
+           class="icon-wrapper flex-row main-center secondary-center">
         <span class="icon-font icon">A</span>
       </div>
     </div>
     <div class="reader-wrapper">
       <div id="read"></div>
-      <div class="mask">
-        <div class="left" @click="prev"></div>
-        <div class="center"></div>
-        <div class="right" @click="next"></div>
-      </div>
+    </div>
+    <div class="operate flex-row main-between">
+      <el-button @click="prev">上一页</el-button>
+
+      <el-button @click="next">下一页</el-button>
     </div>
   </section>
 </template>
@@ -52,7 +57,7 @@ export default {
       // 生成Rendition,通过Book.renderTo生成
       this.rendition = this.book.renderTo('read', {
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight - 100
       })
       // 通过Rendition.display渲染电子书
       this.rendition.display()
@@ -76,26 +81,31 @@ export default {
 <style lang="scss" scoped>
 .book-reader {
   position: relative;
+  height: 100%;
   .reader-wrapper {
-    .mask {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 100;
-      display: flex;
-      width: 100%;
-      height: 100%;
-      // background-color: aqua;
-      .left {
-        flex: 0 0 200px;
-        // background-color: red;
-      }
-      .center {
-        flex: 1;
-      }
-      .right {
-        flex: 0 0 200px;
-        // background-color: orange;
+  }
+  .operate {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 20px;
+  }
+  .title-wrapper {
+    box-sizing: border-box;
+    padding: 20px 10px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 101;
+    .icon-wrapper {
+      width: 25%;
+      .icon {
+        font-size: 25px;
+        cursor: pointer;
       }
     }
   }

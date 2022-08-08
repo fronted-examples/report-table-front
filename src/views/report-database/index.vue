@@ -148,8 +148,8 @@ import { addDataSource, getDataSourcesByKeyword, connectionTest } from '@/apis/i
 export default {
   data () {
     const databaseCheck = (rule, value, callback) => {
-      if (!/(^[a-z A-Z]+$)|(_-)/.test(value)) {
-        return callback(new Error('只能输入英文字符'))
+      if (!/(^[a-z A-Z | 0-9]+$)|(_-)/.test(value)) {
+        return callback(new Error('只能输入字符和数字'))
       }
 
       callback()
@@ -173,9 +173,9 @@ export default {
 
     return {
       jdbcUrlMap: {
-        0: 'jdbc:mysql://localhost:port/databaseName?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true',
-        1: 'jdbc:oracle:thin:@localhost:port:databaseName',
-        2: 'jdbc:sqlserver://localhost:port;databaseName=databaseName'
+        0: 'jdbc:mysql://${localhost}:${port}/${databaseName}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true',
+        2: 'jdbc:oracle:thin:@${localhost}:${port}:${databaseName}',
+        1: 'jdbc:sqlserver://${localhost}:${port};databaseName=${databaseName}'
       },
       options: [{
         label: 'MySQL',
@@ -244,19 +244,19 @@ export default {
     },
     'form.localhost': {
       handler (newVal) {
-        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/localhost/, newVal ? newVal : 'localhost').replace(/port/, this.form.port ? this.form.port : 'port').replace(/databaseName/, this.form.databaseName ? this.form.databaseName : 'databaseName')
+        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/\$\{localhost\}/, newVal ? newVal : '${localhost}').replace(/\$\{port\}/, this.form.port ? this.form.port : '${port}').replace(/\$\{databaseName\}/, this.form.databaseName ? this.form.databaseName : '${databaseName}')
       },
       immediate: true
     },
     'form.port': {
       handler (newVal) {
-        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/localhost/, this.form.localhost ? this.form.localhost : 'localhost').replace(/port/, newVal ? newVal : 'port').replace(/databaseName/, this.form.databaseName ? this.form.databaseName : 'databaseName')
+        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/\$\{localhost\}/, this.form.localhost ? this.form.localhost : '${localhost}').replace(/\$\{port\}/, newVal ? newVal : '${port}').replace(/\$\{databaseName\}/, this.form.databaseName ? this.form.databaseName : '${databaseName}')
       },
       immediate: true
     },
     'form.databaseName': {
       handler (newVal) {
-        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/localhost/, this.form.localhost ? this.form.localhost : 'localhost').replace(/port/, this.form.port ? this.form.port : 'port').replace(/databaseName/, newVal ? newVal : 'databaseName')
+        this.form.jdbcUrl = this.jdbcUrlMap[this.form.type].replace(/\$\{localhost\}/, this.form.localhost ? this.form.localhost : '${localhost}').replace(/\$\{port\}/, this.form.port ? this.form.port : '${port}').replace(/\$\{databaseName\}/, newVal ? newVal : '${databaseName}')
       },
       immediate: true
     }

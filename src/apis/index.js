@@ -1,10 +1,11 @@
 import request from "@/utils/request";
 
-export const getTables = params => {
+export const getTables = (params, data) => {
   return request({
     url: "/sql-server/getTables",
-    method: "get",
-    params
+    method: "post",
+    params,
+    data
   });
 };
 
@@ -37,6 +38,14 @@ export const connectionTest = data => {
     url: "/datasource/connectionTest",
     method: "post",
     data
+  });
+};
+
+export const getTablesByDataSource = params => {
+  return request({
+    url: "/datasource/getTablesByDataSource",
+    method: "get",
+    params
   });
 };
 

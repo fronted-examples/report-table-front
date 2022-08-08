@@ -6,8 +6,7 @@
            active-text-color="#ffd04b">
     <el-submenu v-for="(menu, index) in menus"
                 :key="index"
-                :index="(index + 1).toString()"
-                @click.native.stop="toTarget(menu)">
+                :index="(index + 1).toString()">
       <template slot="title">
         <i :class="menu.icon"></i>
         <span>{{ menu.label }}</span>
@@ -49,13 +48,17 @@ export default {
         label: '报表管理',
         icon: 'el-icon-pie-chart',
         children: [{
-          label: '数据库管理',
+          label: '数据源管理',
           icon: 'el-icon-s-data',
           name: 'ReportDatabase'
         }, {
           label: '报表模板管理',
           icon: 'el-icon-pie-chart',
           name: 'ReportTemplate'
+        }, {
+          label: '表管理',
+          icon: 'el-icon-pie-chart',
+          name: 'TableManage'
         }]
       }, {
         label: "客户管理",
