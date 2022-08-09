@@ -1,0 +1,49 @@
+.slide-fade-ttb-enter,
+.slide-fade-ttb-leave-to {
+  transform: translateY(-150px);
+}
+
+.slide-fade-btt-enter,
+.slide-fade-btt-leave-to {
+  transform: translateY(150px);
+}
+
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.slide-fade-ttb-enter-active,
+.slide-fade-btt-enter-active {
+  transition: all 0.5s ease;
+}
+.slide-fade-ttb-leave-active,
+.slide-fade-btt-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.drawer-ttb {
+  position: absolute;
+  top: var(--drawerTop);
+  left: 0;
+  width: 100%;
+  height: var(--drawerHeight);
+  z-index: 1001;
+  background-color: #fff;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  z-index: 1000;
+}

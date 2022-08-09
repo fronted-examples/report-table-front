@@ -11,12 +11,15 @@ import CodeMirror from "vue-codemirror";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
+import Templates from "@/templates/index";
+
 import "@/assets/css/index.scss";
 
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
 Vue.use(CodeMirror);
+Vue.use(Templates);
 
 Vue.prototype.go = gojs;
 
