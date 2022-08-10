@@ -1,6 +1,8 @@
 import Drawer from "./Drawer/index";
+import Radio from "./Radio/index";
+import RadioGroup from "./RadioGroup/index";
 
-const components = [Drawer];
+const components = [Drawer, Radio, RadioGroup];
 
 const install = function(Vue) {
   components.forEach(component => {
@@ -14,5 +16,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 export default {
   install,
-  Drawer
+  Drawer,
+  Radio,
+  RadioGroup
 };

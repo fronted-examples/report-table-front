@@ -1,0 +1,34 @@
+.radio {
+  margin-right: 10px;
+  &:last-of-type {
+    margin-right: 0;
+  }
+  .radio-inner {
+    display: inline-block;
+    .radio-inner__input {
+      display: inline-block;
+      box-sizing: border-box;
+      border: 1px solid #efefff;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      background-color: var(--radioBgColor);
+      cursor: pointer;
+      position: relative;
+      &::after {
+        content: "";
+        width: 20%;
+        height: 53%;
+        border-right: 1.5px solid var(--borderColor);
+        border-bottom: 1.5px solid var(--borderColor);
+        position: absolute;
+        top: 15%;
+        left: 35%;
+        transform: rotate(45deg) scale(0.85);
+      }
+    }
+  }
+  .radio-input {
+    display: none;
+  }
+}

@@ -21,13 +21,16 @@
         </div>
       </div>
       <drawer :visible.sync="themeVisible">
-        <div>
-          <label>背景</label>
-          <el-radio-group v-model="bgColor">
-            <el-radio :label="3">备选项</el-radio>
-            <el-radio :label="6">备选项</el-radio>
-            <el-radio :label="9">备选项</el-radio>
-          </el-radio-group>
+        <div class="theme flex-row secondary-center">
+          <label class="theme-label">背景</label>
+
+          <radio radio-type="theme"
+                 v-for="(item, index) of bgColorOptions"
+                 :key="item.label"
+                 color="#708090"
+                 :label="item.label"
+                 v-model="themeColor"
+                 @change="selectTheme(index)" />
         </div>
       </drawer>
     </section>
@@ -69,13 +72,41 @@ export default {
       themeVisible: false,
       bookMenus: [],
       bgColor: '',
+      themeColor: 'rgba(255,255,255, 1)',
       bgColorOptions: [{
-        value: ''
+        label: 'rgba(255,255,255, 1)',
+        name: 'default',
+        style: {
+          body: {
+            'color': '#000', 'background': 'rgba(255,255,255, 1)'
+          }
+        }
+      }, {
+        label: 'rgba(205,133,63, .5)',
+        name: 'orange',
+        style: {
+          body: {
+            'color': '#000', 'background': 'rgba(205,133,63, .5)'
+          }
+        }
+      }, {
+        label: 'rgba(0,0,0, 1)',
+        name: 'dark',
+        style: {
+          body: {
+            'background': 'rgba(0,0,0, 1)', 'color': '#fff'
+          }
+        }
       }]
     }
   },
   mounted () {
     this.showEpub()
+  },
+  watch: {
+    themeColor (newVal) {
+      console.log('themeColor: ', newVal)
+    }
   },
   methods: {
     // 电子书的解析和渲染
@@ -89,10 +120,12 @@ export default {
 
       // 生成Rendition,通过Book.renderTo生成
       this.rendition = this.book.renderTo('read', {
-        width: window.innerWidth - 400,
+        width: '100%',
         height: window.innerHeight - 100,
         allowScriptedContent: true
       })
+
+      this.registerThemes()
 
       // 通过Rendition.display渲染电子书
       this.rendition.display()
@@ -114,7 +147,16 @@ export default {
       if (this.rendition) {
         this.rendition.next()
       }
-    }
+    },
+    selectTheme (index) {
+      this.rendition.themes.select(this.bgColorOptions[index].name)
+      this.themeVisible = false
+    },
+    registerThemes () {
+      this.bgColorOptions.forEach((theme) => {
+        this.rendition.themes.register(theme.name, theme.style)
+      })
+    },
   }
 }
 </script>
@@ -178,6 +220,13 @@ export default {
       width: 100%;
       padding: 20px 10px;
       box-shadow: 0 0 5px rgba($color: #000000, $alpha: 0.1);
+    }
+  }
+  .theme {
+    box-sizing: border-box;
+    padding: 20px;
+    .theme-label {
+      margin-right: 10px;
     }
   }
 }
