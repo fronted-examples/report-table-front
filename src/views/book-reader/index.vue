@@ -77,24 +77,33 @@ export default {
         label: 'rgba(255,255,255, 1)',
         name: 'default',
         style: {
-          body: {
-            'color': '#000', 'background': 'rgba(255,255,255, 1)'
+          'body': {
+            'background': 'rgba(255,255,255, 1)', 'color': '#000 !important'
+          },
+          'h1, h2, h3, h4, h5, h6, p': {
+            'background': 'transparent', 'color': '#000 !important'
           }
         }
       }, {
-        label: 'rgba(205,133,63, .5)',
+        label: '#F4A460',
         name: 'orange',
         style: {
-          body: {
-            'color': '#000', 'background': 'rgba(205,133,63, .5)'
+          'body': {
+            'background': 'linear-gradient(	#FFE4C4, #FFDAB9, 	#D2B48C)', 'color': '#000 !important'
+          },
+          'h1, h2, h3, h4, h5, h6, p': {
+            'background': 'transparent', 'color': '#000 !important'
           }
         }
       }, {
-        label: 'rgba(0,0,0, 1)',
+        label: 'rgba(0, 0, 0, 1)',
         name: 'dark',
         style: {
-          body: {
-            'background': 'rgba(0,0,0, 1)', 'color': '#fff'
+          'body': {
+            'background': 'rgba(0, 0, 0, 1)', 'color': '#fff !important'
+          },
+          'h1, h2, h3, h4, h5, h6, p': {
+            'background': 'transparent', 'color': '#fff !important'
           }
         }
       }]
@@ -122,7 +131,8 @@ export default {
       this.rendition = this.book.renderTo('read', {
         width: '100%',
         height: window.innerHeight - 100,
-        allowScriptedContent: true
+        allowScriptedContent: true,
+        methods: 'default'
       })
 
       this.registerThemes()
