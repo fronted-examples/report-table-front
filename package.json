@@ -16,9 +16,10 @@
   "dependencies": {
     "axios": "^0.24.0",
     "element-ui": "^2.15.6",
-    "epubjs": "^0.3.73",
+    "epubjs": "^0.3.84",
     "express": "^4.17.1",
     "gojs": "^2.2.12",
+    "jquery": "^3.6.0",
     "luckyexcel": "^1.0.1",
     "parse-link-header": "^1.0.1",
     "sortablejs": "^1.15.0",

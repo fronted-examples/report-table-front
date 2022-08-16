@@ -1,33 +1,38 @@
 <template>
   <section class="book-reader">
     <section class="title-operate_container">
-      <div class="title-wrapper flex-row main-between secondary-center">
-        <div class="icon-wrapper flex-row main-center secondary-center">
+      <div
+           class="title-wrapper flex-row main-between secondary-center">
+        <div
+             class="icon-wrapper flex-row main-center secondary-center">
           <span class="icon-menu icon"
                 @click="menusVisible = !menusVisible"></span>
         </div>
 
-        <div class="icon-wrapper flex-row main-center secondary-center">
+        <div
+             class="icon-wrapper flex-row main-center secondary-center">
           <span class="icon-progress icon"></span>
         </div>
 
-        <div class="icon-wrapper flex-row main-center secondary-center">
+        <div
+             class="icon-wrapper flex-row main-center secondary-center">
           <span class="icon-theme icon"
                 @click="themeVisible = !themeVisible"></span>
         </div>
 
-        <div class="icon-wrapper flex-row main-center secondary-center">
+        <div
+             class="icon-wrapper flex-row main-center secondary-center">
           <span class="icon-font icon">A</span>
         </div>
       </div>
       <drawer :visible.sync="themeVisible">
-        <div class="theme flex-row secondary-center">
+        <div
+             class="theme flex-row secondary-center">
           <label class="theme-label">背景</label>
 
           <radio radio-type="theme"
                  v-for="(item, index) of bgColorOptions"
-                 :key="item.label"
-                 color="#708090"
+                 :key="item.label" color="#708090"
                  :label="item.label"
                  v-model="themeColor"
                  @change="selectTheme(index)" />
@@ -47,12 +52,10 @@
     <el-drawer class="drawer"
                :visible.sync="menusVisible"
                :show-close="false">
-      <span slot="title"
-            class="title">目录</span>
+      <span slot="title" class="title">目录</span>
       <div class="nav-item flex-row main-between"
            v-for="item of bookMenus"
-           :key="item.id"
-           @click="toMenu(item)">
+           :key="item.id" @click="toMenu(item)">
         <span>{{ item.label }}</span>
         <i class="el-icon-arrow-right"></i>
       </div>
@@ -62,6 +65,8 @@
 
 <script>
 import Epub from 'epubjs'
+import turn from '@/utils/turn.js'
+
 const DOWNLOAD_URL = '/static/三国演义.epub'
 
 export default {
@@ -111,6 +116,7 @@ export default {
   },
   mounted () {
     this.showEpub()
+    // this.onTurn()
   },
   watch: {
     themeColor (newVal) {
@@ -167,6 +173,15 @@ export default {
         this.rendition.themes.register(theme.name, theme.style)
       })
     },
+    // onTurn () {
+    //   this.$nextTick(() => {
+    //     $("#read").turn({
+    //       autoCenter: true,
+    //       height: 646,
+    //       width: 996,
+    //     })
+    //   })
+    // }
   }
 }
 </script>
