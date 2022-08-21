@@ -3,14 +3,13 @@
     <transition :name="`slide-fade-${direction}`">
       <div v-if="visible"
            :class="`drawer-${direction}`"
-           :style="{ '--drawerHeight': '60px', '--drawerTop': top }">
+           :style="{ '--drawerHeight': height, '--drawerTop': top }">
         <slot></slot>
       </div>
     </transition>
 
     <transition name="fade">
-      <div class="mask"
-           v-if="visible"
+      <div class="mask" v-if="visible"
            @click="maskClose"></div>
     </transition>
   </div>
@@ -27,6 +26,7 @@ export default {
       type: Boolean,
       default: false
     },
+    height: [String, Number],
     direction: {
       type: String,
       default: 'ttb',

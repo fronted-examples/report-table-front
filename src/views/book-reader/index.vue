@@ -22,25 +22,60 @@
 
         <div
              class="icon-wrapper flex-row main-center secondary-center">
-          <span class="icon-font icon">A</span>
+          <span class="icon-font icon"></span>
         </div>
       </div>
       <drawer :visible.sync="themeVisible">
-        <div
-             class="theme flex-row secondary-center">
+        <div class="theme flex-column">
+          <label class="theme-label">视图模式</label>
+
+          <div class="drawer-items">
+            <el-tooltip class="item" effect="dark"
+                        content="单页模式"
+                        placement="top">
+              <i class="icon-single-page mode-icon"
+                 @click.stop="handleSpread('single')"></i>
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark"
+                        content="双页模式"
+                        placement="top">
+              <i class="icon-double-page mode-icon"
+                 @click.stop="handleSpread('double')"></i>
+            </el-tooltip>
+
+            <el-tooltip class="item" effect="dark"
+                        content="滚动模式"
+                        placement="top">
+              <i class="icon-scroll-page mode-icon"
+                 @click.stop="handleSpread('scroll')"></i>
+            </el-tooltip>
+          </div>
+        </div>
+        <div class="theme flex-column">
           <label class="theme-label">背景</label>
 
-          <radio radio-type="theme"
-                 v-for="(item, index) of bgColorOptions"
-                 :key="item.label" color="#708090"
-                 :label="item.label"
-                 v-model="themeColor"
-                 @change="selectTheme(index)" />
+          <div class="drawer-items">
+            <radio radio-type="theme"
+                   v-for="(item, index) of bgColorOptions"
+                   :key="item.label"
+                   color="#708090"
+                   :label="item.label"
+                   v-model="themeColor"
+                   @change="selectTheme(index)" />
+          </div>
         </div>
       </drawer>
     </section>
     <div class="reader-wrapper">
       <div id="read"></div>
+      <div class="bg-one"></div>
+      <div class="bg-two">
+        <div class="spine-shadow-left"></div>
+        <div class="book-spine"></div>
+        <div class="spine-shadow-right"></div>
+      </div>
+      <div class="bg-three"></div>
     </div>
     <div class="operate flex-row main-between">
       <el-button @click="prev">上一页</el-button>
@@ -137,8 +172,7 @@ export default {
       this.rendition = this.book.renderTo('read', {
         width: '100%',
         height: window.innerHeight - 100,
-        allowScriptedContent: true,
-        methods: 'default'
+        allowScriptedContent: true
       })
 
       this.registerThemes()
@@ -173,15 +207,12 @@ export default {
         this.rendition.themes.register(theme.name, theme.style)
       })
     },
-    // onTurn () {
-    //   this.$nextTick(() => {
-    //     $("#read").turn({
-    //       autoCenter: true,
-    //       height: 646,
-    //       width: 996,
-    //     })
-    //   })
-    // }
+    // 设置阅读器分页模式
+    handleSpread (mode) {
+      if (mode === 'single') { }
+      if (mode === 'double') { }
+      if (mode === 'scroll') { }
+    }
   }
 }
 </script>
@@ -191,6 +222,95 @@ export default {
   position: relative;
   height: 100%;
   .reader-wrapper {
+    position: relative;
+    #read {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    // @media (min-width: 1000px) {
+    //   #read:after {
+    //     position: absolute;
+    //     width: 1px;
+    //     border-right: 2px #000 solid;
+    //     height: 90%;
+    //     z-index: 1;
+    //     left: 50%;
+    //     margin-left: -1px;
+    //     top: 5%;
+    //     opacity: 0.15;
+    //     box-shadow: -2px 0 15px rgba(0, 0, 0, 1);
+    //     content: '';
+    //   }
+    // }
+    .bg-one,
+    .bg-two,
+    .bg-three {
+      box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.18);
+    }
+    .bg-one {
+      position: absolute;
+      left: 7px;
+      right: 7px;
+      top: 5px;
+      bottom: 5px;
+      border: 1px solid rgba(191, 191, 191, 1);
+      z-index: 1;
+    }
+    .bg-two {
+      position: absolute;
+      left: 9px;
+      right: 9px;
+      top: 5px;
+      bottom: 5px;
+      border: 1px solid rgba(191, 191, 191, 1);
+      z-index: 2;
+      overflow: hidden;
+      .spine-shadow-left {
+        width: 68px;
+        height: 100%;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAADCAYAAAAqTqlmAAAA/0lEQVQoke2SQY7CMAxF/3dUUfUCbLj/kViz4AAghGgS238WQyOq4QhjKXqxZcfOlykJAAwAv53r9cppmgwASimD9/udZkYzI0k+n89xr7UaANRabVkWbH7v3WqtNDO21rgsC1trdHcDgIj4Q3cnSb5eL5oZ3X1QkgFAa80AIDMtMxkRjAiaGSOCmcnMpCRzdwAYBAB3ty1nE0L4NQHA+XwGAFwuF5xOJ2SmjscjJOl2u1FvFTNTAPB4PPBpW3yeZ63rSkmqtXKLHw4HzfOMdV13+Zmp3js/CQCSNE3TeL/3vqsrpSgixlylFL0/+nWuzJSZMTP1FmL04f+G7DfkB/uZQX9OFIuVAAAAAElFTkSuQmCC)
+          repeat-y;
+        z-index: 10;
+        margin: 0;
+        z-index: 10;
+        position: absolute;
+        left: calc(50% - 68px);
+      }
+      .book-spine {
+        position: absolute;
+        width: 1px;
+        height: 100%;
+        position: absolute;
+        left: 50%;
+        bottom: 100%;
+        bottom: 0;
+        border: 2px solid rgba(191, 191, 191, 1);
+        border-left: none;
+        box-sizing: border-box;
+        z-index: 10;
+      }
+      .spine-shadow-right {
+        width: 68px;
+        height: 100%;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAADCAYAAAAqTqlmAAABVklEQVQokW1Suw4iMQycyWMThBB0NFtQ8yf3WfwkNQUNHRLSKquwnitus4pOWIrGHnlsJzFvt9sf55yccwohGP6ZhRA2JGktx3svM5P3Xt57rbwBwDAMBgAkLYQgM1PD3W4nSQohyHtvAPA/hhBsGAZN06RhGGRmSikpxmgAkFKyaZqQUtpiSTIz7fd7Nd/MdDwetSyLAUDDWquN4ygAPw9Jc5IEAGshmpmcczSzjUdn3+8X6yUEAJK0LAtb3PJrrZsmxoi+T62VPfa6Ugpyzkgpbfw8z5SkUgpzzj/n+nw+6HlJer/flKTz+Qwz0ziOeDweAID7/d6krY4k0ZEkADjnuP729iiN7xuvm4NlWbhuA733anHLjzFumlor+j4xRvXY63LOKKVgnueNTymJJHPOKqX8nOtwOKDnSfJ0OokkX68XnHN8Pp+4XC4AgOv12qStDknqLwxUBhX5L/TkAAAAAElFTkSuQmCC)
+          repeat-y;
+        z-index: 10;
+        margin: 0;
+        box-sizing: border-box;
+        position: absolute;
+        right: calc(50% - 68px);
+      }
+    }
+    .bg-three {
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      top: 5px;
+      bottom: 5px;
+      border: 1px solid rgba(191, 191, 191, 1);
+      z-index: 0;
+    }
   }
   .operate {
     position: absolute;
@@ -252,6 +372,23 @@ export default {
     padding: 20px;
     .theme-label {
       margin-right: 10px;
+      font-size: 15px;
+    }
+
+    .drawer-items {
+      margin-top: 10px;
+      .mode-icon {
+        font-size: 60px;
+        cursor: pointer;
+        opacity: 0.4;
+        margin: 0 10px;
+        &:first-of-type {
+          margin-left: 0;
+        }
+      }
+      .icon-double-page {
+        font-weight: bold;
+      }
     }
   }
 }
