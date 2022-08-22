@@ -3,7 +3,7 @@
     <span class="radio-inner">
       <span v-if="radioType === 'theme'"
             class="radio-inner__input"
-            :style="{ '--borderColor': borderColor, '--radioBgColor': bgColor }"></span>
+            :style="{ '--borderColor': borderColor, '--radioBgColor': bgColor, '--ScaleTimes': parseFloat(size).toString() === 'NaN' ? scaleSize[size] : size }"></span>
       <slot v-if="radioType !== 'theme'"></slot>
     </span>
     <input ref="radioRef"
@@ -35,11 +35,23 @@ export default {
       type: String,
       default: 'transparent'
     },
+    size: {
+      type: [String, Number],
+      default: 'normal',
+      validator: function (val) {
+        return ['mini', 'normal', 'large'].indexOf(val) !== -1 || parseFloat(val).toString() !== "NaN"
+      }
+    },
     backgroundColor: String
   },
   data () {
     return {
-      borderColor: 'transparent'
+      borderColor: 'transparent',
+      scaleSize: {
+        mini: 0.5,
+        normal: 1,
+        large: 1.5
+      }
     }
   },
   computed: {

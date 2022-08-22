@@ -1,36 +1,35 @@
-'use strict'
+"use strict";
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
+const path = require("path");
 
 module.exports = {
   dev: {
-
     // Paths
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsSubDirectory: "static",
+    assetsPublicPath: "/",
     proxyTable: {
       "/api": {
-        target: 'https://amelie-home-shop.myshopify.com/admin', // 请求的接口域名或IP地址，开头是http或https
-        secure: false,  // 如果是https接口，需要配置这个参数
+        target: "https://amelie-home-shop.myshopify.com/admin", // 请求的接口域名或IP地址，开头是http或https
+        secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 是否跨域，如果接口跨域，需要进行这个参数配置
         pathRewrite: {
-          '^/api': '/api'//表示需要rewrite重写路径
+          "^/api": "/api" //表示需要rewrite重写路径
         }
       },
       "/": {
-        target: 'http://localhost:8888',
-        secure: false,  // 如果是https接口，需要配置这个参数
+        target: "http://localhost:8888",
+        secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 是否跨域，如果接口跨域，需要进行这个参数配置
         pathRewrite: {
-          '^/': ''//表示需要rewrite重写路径
+          "^/": "" //表示需要rewrite重写路径
         }
       }
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: "localhost", // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -50,7 +49,7 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    devtool: 'cheap-module-eval-source-map',
+    devtool: "cheap-module-eval-source-map",
 
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help
@@ -62,12 +61,12 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, "../dist/index.html"),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsRoot: path.resolve(__dirname, "../dist"),
+    assetsSubDirectory: "static",
+    assetsPublicPath: "/",
 
     /**
      * Source Maps
@@ -75,14 +74,14 @@ module.exports = {
 
     productionSourceMap: true,
     // https://webpack.js.org/configuration/devtool/#production
-    devtool: '#source-map',
+    devtool: "#source-map",
 
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
-    productionGzipExtensions: ['js', 'css'],
+    productionGzipExtensions: ["js", "css"],
 
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
@@ -90,4 +89,4 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
   }
-}
+};

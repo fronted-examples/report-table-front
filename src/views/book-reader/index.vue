@@ -1,27 +1,22 @@
 <template>
   <section class="book-reader">
     <section class="title-operate_container">
-      <div
-           class="title-wrapper flex-row main-between secondary-center">
-        <div
-             class="icon-wrapper flex-row main-center secondary-center">
+      <div class="title-wrapper flex-row main-between secondary-center">
+        <div class="icon-wrapper flex-row main-center secondary-center">
           <span class="icon-menu icon"
                 @click="menusVisible = !menusVisible"></span>
         </div>
 
-        <div
-             class="icon-wrapper flex-row main-center secondary-center">
+        <div class="icon-wrapper flex-row main-center secondary-center">
           <span class="icon-progress icon"></span>
         </div>
 
-        <div
-             class="icon-wrapper flex-row main-center secondary-center">
+        <div class="icon-wrapper flex-row main-center secondary-center">
           <span class="icon-theme icon"
                 @click="themeVisible = !themeVisible"></span>
         </div>
 
-        <div
-             class="icon-wrapper flex-row main-center secondary-center">
+        <div class="icon-wrapper flex-row main-center secondary-center">
           <span class="icon-font icon"></span>
         </div>
       </div>
@@ -30,21 +25,24 @@
           <label class="theme-label">视图模式</label>
 
           <div class="drawer-items">
-            <el-tooltip class="item" effect="dark"
+            <el-tooltip class="item"
+                        effect="dark"
                         content="单页模式"
                         placement="top">
               <i class="icon-single-page mode-icon"
                  @click.stop="handleSpread('single')"></i>
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark"
+            <el-tooltip class="item"
+                        effect="dark"
                         content="双页模式"
                         placement="top">
               <i class="icon-double-page mode-icon"
                  @click.stop="handleSpread('double')"></i>
             </el-tooltip>
 
-            <el-tooltip class="item" effect="dark"
+            <el-tooltip class="item"
+                        effect="dark"
                         content="滚动模式"
                         placement="top">
               <i class="icon-scroll-page mode-icon"
@@ -60,6 +58,7 @@
                    v-for="(item, index) of bgColorOptions"
                    :key="item.label"
                    color="#708090"
+                   size="large"
                    :label="item.label"
                    v-model="themeColor"
                    @change="selectTheme(index)" />
@@ -80,10 +79,12 @@
     <el-drawer class="drawer"
                :visible.sync="menusVisible"
                :show-close="false">
-      <span slot="title" class="title">目录</span>
+      <span slot="title"
+            class="title">目录</span>
       <div class="nav-item flex-row main-between"
            v-for="item of bookMenus"
-           :key="item.id" @click="toMenu(item)">
+           :key="item.id"
+           @click="toMenu(item)">
         <span>{{ item.label }}</span>
         <i class="el-icon-arrow-right"></i>
       </div>
@@ -95,7 +96,8 @@
 import Epub from 'epubjs'
 import turn from '@/utils/turn.js'
 
-const DOWNLOAD_URL = '/static/三国演义.epub'
+const DOWNLOAD_URL = 'http://101.35.44.70:9000/file/%E4%B8%89%E5%9B%BD%E6%BC%94%E4%B9%89.epub'
+const fastTextEncoding = require('fast-text-encoding')
 
 export default {
   name: 'BookReader',
@@ -161,9 +163,21 @@ export default {
       const { toc } = await this.book.loaded.navigation
       this.bookMenus = toc
 
+      console.log('book: ', this.book)
+      const { zip } = this.book.archive
+      let utf8decoder = new TextDecoder()
+      console.log('zip: ', zip.files)
+      for (let i = 0; i < Object.values(zip.files).length; i++) {
+        // console.log('compress: ', Object.values(zip.files)[i]._data.compressedContent)
+        console.log('utf8decoder: ', utf8decoder.decode(Object.values(zip.files)[i]._data.compressedContent))
+      }
+      // for (let i of zip.files) {
+      //   console.log('compress: ', zip.files[i])
+      // }
+
       // 生成Rendition,通过Book.renderTo生成
       this.rendition = this.book.renderTo('read', {
-        width: '100%',
+        width: '600px',
         height: window.innerHeight - 100,
         allowScriptedContent: true
       })
@@ -218,8 +232,8 @@ export default {
     position: relative;
     #read {
       position: relative;
-      display: flex;
-      justify-content: center;
+      // display: flex;
+      // justify-content: center;
     }
     @media (min-width: 1000px) {
       #read:after {

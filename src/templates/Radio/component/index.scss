@@ -15,6 +15,7 @@
       background-color: var(--radioBgColor);
       cursor: pointer;
       position: relative;
+      transform: scale(var(--ScaleTimes));
       &::after {
         content: "";
         width: 20%;
