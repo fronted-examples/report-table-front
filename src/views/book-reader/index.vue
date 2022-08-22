@@ -135,7 +135,6 @@ export default {
       const { toc } = await this.book.loaded.navigation
       this.bookMenus = toc
 
-      console.log('this.book: ', this.book)
 
       // Book对象的钩子函数ready
       this.book.ready.then(async () => {
