@@ -1,8 +1,8 @@
-"use strict";
+"use strict"
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require("path");
+const path = require("path")
 
 module.exports = {
   dev: {
@@ -18,12 +18,12 @@ module.exports = {
           "^/api": "/api" //表示需要rewrite重写路径
         }
       },
-      "/": {
-        target: "http://localhost:8888",
+      "/author": {
+        target: "http://localhost:8001/author",
         secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 是否跨域，如果接口跨域，需要进行这个参数配置
         pathRewrite: {
-          "^/": "" //表示需要rewrite重写路径
+          "^/author": "" //表示需要rewrite重写路径
         }
       }
     },
@@ -89,4 +89,4 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
   }
-};
+}

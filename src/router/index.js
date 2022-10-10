@@ -1,7 +1,10 @@
-import Vue from "vue";
-import Router from "vue-router";
+import Vue from "vue"
+import Router from "vue-router"
 
-import Layout from "@/layout/index";
+import Layout from "@/layout/index"
+
+import Login from '@/views/login/index'
+import ssoLogin from '@/views/login/ssoLogin'
 
 import StatisticsYears from '@/views/statistics-years/index'
 import SqlServer from '@/views/sql-server/index'
@@ -11,16 +14,28 @@ import ReportTemplate from '@/views/report-template/index'
 import ReportDesign from '@/views/report-design/index'
 import ReportPreview from '@/views/report-preview/index'
 import BookReader from '@/views/book-reader/index'
-import TableManage from "@/views/table-manage/index";
+import TableManage from "@/views/table-manage/index"
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
+  mode: "history",
+  base: "/",
   routes: [
     {
       path: "/",
+      name: "Login",
+      component: Login
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: ssoLogin
+    },
+    {
+      path: "/home",
       component: Layout,
-      redirect: "/statistics-years",
+      redirect: "/home/statistics-years",
       children: [
         {
           path: "statistics-years",
@@ -45,17 +60,17 @@ export default new Router({
       redirect: "/report/report-database",
       children: [
         {
-          path: "/report-database",
+          path: "report-database",
           name: "ReportDatabase",
           component: ReportDatabase
         },
         {
-          path: "/report-template",
+          path: "report-template",
           name: "ReportTemplate",
           component: ReportTemplate
         },
         {
-          path: "/table-manage",
+          path: "table-manage",
           name: "TableManage",
           component: TableManage
         }
@@ -66,15 +81,15 @@ export default new Router({
       component: Layout,
       redirect: '/book/book-reader',
       children: [{
-        path: '/book-reader',
+        path: 'book-reader',
         name: 'BookReader',
         component: BookReader
       }]
     },
     {
-      path: "/report-preview",
+      path: "report-preview",
       name: "ReportPreview",
       component: ReportPreview
     }
   ]
-});
+})
