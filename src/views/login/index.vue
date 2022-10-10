@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { getToken } from '@/apis/index'
+
 export default {
   name: 'Login',
   data () {
@@ -37,6 +39,11 @@ export default {
         userPwd: ""
       }
     }
+  },
+  mounted: function () {
+    this.code = this.$route.query.code
+    this.state = this.$route.query.state
+    this.getToken()
   },
   methods: {
     submit () {
@@ -70,6 +77,19 @@ export default {
     },
     authorLogin () {
       window.location.href = "http://localhost:8001/author/oauth/authorize?client_id=client3&redirect_uri=http://localhost:8080&response_type=code&scope=all"
+    },
+    getToken: function () {
+      const params = {
+        code: this.code,
+        grant_type: "authorization_code",
+        redirect_uri: "http://localhost:8080",
+        scope: "all",
+        client_id: "client3",
+        client_secret: "123456"
+      }
+      getToken(params).then((res) => {
+        this.$router.push("/home")
+      })
     }
   }
 }
