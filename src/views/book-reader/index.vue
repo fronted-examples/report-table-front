@@ -101,7 +101,6 @@
 
 <script>
 import Epub from 'epubjs'
-import turn from '@/utils/turn.js'
 
 const DOWNLOAD_URL = 'http://101.35.44.70:9000/file/%E4%B8%89%E5%9B%BD%E6%BC%94%E4%B9%89.epub'
 const fastTextEncoding = require('fast-text-encoding')
