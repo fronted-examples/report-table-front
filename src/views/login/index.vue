@@ -1,6 +1,5 @@
 <template>
-  <el-card class="index-card"
-           shadow="always">
+  <el-card class="index-card" shadow="always">
     <h3 class="title"> 登录 </h3>
     <el-form :model="form">
       <el-form-item>
@@ -10,13 +9,12 @@
       </el-form-item>
       <el-form-item>
         <el-input v-model="form.userPwd"
-                  maxlength="30"
-                  placeholder="密码"
+                  maxlength="30" placeholder="密码"
                   show-password></el-input>
       </el-form-item>
       <el-button class="login-submit"
-                 type="primary"
-                 @click="submit"> 登录 </el-button>
+                 type="primary" @click="submit">
+        登录 </el-button>
 
       <div class="footer">
         <span class="opacity-btn"
@@ -71,7 +69,7 @@ export default {
       //   })
     },
     authorLogin () {
-      window.location.href = "http://localhost:8001/author/oauth/authorize?client_id=client3&redirect_uri=http://localhost:8080/login&response_type=code&scope=all"
+      window.location.href = "http://localhost:8001/author/oauth/authorize?client_id=client3&redirect_uri=http://localhost:8080&response_type=code&scope=all"
     }
   }
 }
@@ -79,8 +77,8 @@ export default {
 
 <style lang="scss" scoped>
 .index-card {
-  width: 50vw;
-  height: 25vw;
+  width: 500px;
+  height: 350px;
   position: absolute;
   top: 0;
   left: 0;
