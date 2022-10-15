@@ -143,7 +143,7 @@ export const getLuckySheetTplSettings = params => {
 
 export const getToken = (params) => {
   return request({
-    url: "/author/oauth/token",
+    url: "/author/auth/token",
     method: 'post',
     params
   })

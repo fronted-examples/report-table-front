@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { getToken } from '@/apis/index'
 
 export default {
   name: 'Login',
@@ -36,18 +35,20 @@ export default {
     return {
       form: {
         username: "",
-        userPwd: ""
+        userPwd: "",
+      },
+      sso: {
+        url: "http://localhost:8001/author/oauth/authorize",
+        redirect_uri: "http://localhost:8080/callback",
+        client_id: "client3",
+        response_type: "code",
+        scope: "custom"
       }
     }
   },
-  mounted: function () {
-    this.code = this.$route.query.code
-    this.state = this.$route.query.state
-    this.getToken()
-  },
   methods: {
     submit () {
-      this.$router.push("/login")
+      // this.$router.push("/login")
       // if (this.form.username.length < 4) {
       //   ElMessage.warning("用户名长度至少 4 位")
       //   return
@@ -76,19 +77,30 @@ export default {
       //   })
     },
     authorLogin () {
-      window.location.href = "http://localhost:8001/author/oauth/authorize?client_id=client3&redirect_uri=http://localhost:8080&response_type=code&scope=all"
+      let href = `${this.sso.url}?client_id=${this.sso.client_id}&redirect_uri=${this.sso.redirect_uri}&response_type=${this.sso.response_type}&scope=${this.sso.scope}`
+
+      let otherWindow = window.open(href, "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
+
+      // 父子窗口通信
+      this.$registerMessage(this.getMessage)
     },
-    getToken: function () {
+    login: function () {
       const params = {
-        code: this.code,
-        grant_type: "authorization_code",
-        redirect_uri: "http://localhost:8080",
-        scope: "all",
+        grant_type: "password",
+        scope: "custom",
         client_id: "client3",
         client_secret: "123456"
       }
       getToken(params).then((res) => {
+        window.close()
+        console.log('res: ', res)
         this.$router.push("/home")
+      })
+    },
+    getMessage (message) {
+      console.log('update: ', message.data)
+      this.$router.push({
+        name: "StatisticsYears"
       })
     }
   }

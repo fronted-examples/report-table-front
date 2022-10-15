@@ -5,6 +5,7 @@ import Layout from "@/layout/index"
 
 import Login from '@/views/login/index'
 import ssoLogin from '@/views/login/ssoLogin'
+import Callback from '@/views/callback/index'
 
 import StatisticsYears from '@/views/statistics-years/index'
 import SqlServer from '@/views/sql-server/index'
@@ -31,6 +32,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: ssoLogin
+    },
+    {
+      path: '/callback',
+      name: 'Callback',
+      component: Callback
     },
     {
       path: "/home",
