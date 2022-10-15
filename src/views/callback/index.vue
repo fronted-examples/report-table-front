@@ -1,10 +1,5 @@
-<template>
-  <div>
-    callback
-  </div>
-</template>
-
 <script>
+// 第三方登录获取token，并通知登录页进行接下来的操作
 import { getToken } from '@/apis/index'
 
 export default {
