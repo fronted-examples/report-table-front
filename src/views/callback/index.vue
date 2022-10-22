@@ -16,6 +16,10 @@ export default {
       this.ssoLogin()
     }
   },
+  // 手动调用render函数，不渲染任何元素
+  render: function (h) {
+    return (null)
+  },
   methods: {
     toOther () {
       console.log('router: ', this.$route)
