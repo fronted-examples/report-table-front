@@ -140,11 +140,25 @@ export const getLuckySheetTplSettings = params => {
   })
 }
 
+export const sendCode = (params) => {
+  return request({
+    url: "/author/auth/sendCode",
+    method: 'get',
+    params
+  })
+}
 
 export const getToken = (params) => {
   return request({
     url: "/author/auth/token",
     method: 'post',
     params
+  })
+}
+
+export const sso = () => {
+  return request({
+    url: "/sso/hello",
+    method: 'get'
   })
 }

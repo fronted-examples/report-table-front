@@ -1,5 +1,6 @@
 <template>
-  <el-card class="index-card" shadow="always">
+  <el-card class="index-card"
+           shadow="always">
     <h3 class="title"> 登录 </h3>
     <el-form :model="form">
       <el-form-item>
@@ -9,11 +10,24 @@
       </el-form-item>
       <el-form-item>
         <el-input v-model="form.userPwd"
-                  maxlength="30" placeholder="密码"
+                  maxlength="30"
+                  placeholder="密码"
                   show-password></el-input>
       </el-form-item>
+      <el-form-item>
+        <div class="code-item">
+          <el-input class="code-input"
+                    v-model="form.authCode"
+                    maxlength="30"
+                    placeholder="验证码"
+                    show-password></el-input>
+          <el-button class="send-btn"
+                     @click="sendCode">发送验证码</el-button>
+        </div>
+      </el-form-item>
       <el-button class="login-submit"
-                 type="primary" @click="submit">
+                 type="primary"
+                 @click="submit">
         登录 </el-button>
 
       <div class="footer">
@@ -28,6 +42,8 @@
 </template>
 
 <script>
+import { sendCode, sso } from '@/apis/index'
+import axios from 'axios'
 
 export default {
   name: 'Login',
@@ -35,7 +51,8 @@ export default {
     return {
       form: {
         username: "",
-        userPwd: "",
+        password: "",
+        authCode: ""
       },
       sso: {
         url: "http://localhost:8001/author/oauth/authorize",
@@ -48,6 +65,7 @@ export default {
   },
   methods: {
     submit () {
+      sso()
       // this.$router.push("/login")
       // if (this.form.username.length < 4) {
       //   ElMessage.warning("用户名长度至少 4 位")
@@ -75,6 +93,12 @@ export default {
       //     ElMessage.error("未知错误")
       //     console.log(error)
       //   })
+    },
+    sendCode: function () {
+      const params = {
+        phone: "17321019208"
+      }
+      sendCode(params).then()
     },
     authorLogin () {
       let href = `${this.sso.url}?client_id=${this.sso.client_id}&redirect_uri=${this.sso.redirect_uri}&response_type=${this.sso.response_type}&scope=${this.sso.scope}`
@@ -110,7 +134,7 @@ export default {
 <style lang="scss" scoped>
 .index-card {
   width: 500px;
-  height: 350px;
+  height: 380px;
   position: absolute;
   top: 0;
   left: 0;
@@ -123,6 +147,16 @@ export default {
     text-align: center;
     font-weight: bold;
     padding: 20px 0;
+  }
+  .code-item {
+    display: flex;
+    .code-input {
+      width: 200px;
+    }
+    .send-btn {
+      width: 150px;
+      margin-left: 20px;
+    }
   }
   .login-submit {
     width: 100%;
