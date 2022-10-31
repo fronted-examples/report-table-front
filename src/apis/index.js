@@ -162,3 +162,10 @@ export const sso = () => {
     method: 'get'
   })
 }
+
+export const ssoLogout = () => {
+  return request({
+    url: "/sso/authLogout",
+    method: 'get'
+  })
+}

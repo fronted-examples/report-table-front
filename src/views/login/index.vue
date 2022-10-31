@@ -29,6 +29,10 @@
                  type="primary"
                  @click="submit">
         登录 </el-button>
+      <el-button class="login-submit"
+                 type="primary"
+                 @click="logout">
+        退出登录 </el-button>
 
       <div class="footer">
         <span class="opacity-btn"
@@ -42,7 +46,7 @@
 </template>
 
 <script>
-import { sendCode, sso } from '@/apis/index'
+import { sendCode, sso, ssoLogout } from '@/apis/index'
 import axios from 'axios'
 
 export default {
@@ -65,7 +69,8 @@ export default {
   },
   methods: {
     submit () {
-      sso()
+      // sso()
+      window.location.href = "http://localhost:1112/hello"
       // this.$router.push("/login")
       // if (this.form.username.length < 4) {
       //   ElMessage.warning("用户名长度至少 4 位")
@@ -93,6 +98,9 @@ export default {
       //     ElMessage.error("未知错误")
       //     console.log(error)
       //   })
+    },
+    logout () {
+      ssoLogout()
     },
     sendCode: function () {
       const params = {
