@@ -1,53 +1,55 @@
 <template>
-  <el-card class="index-card"
-           shadow="always">
-    <h3 class="title"> 登录 </h3>
-    <el-form :model="form">
-      <el-form-item>
-        <el-input v-model="form.username"
-                  maxlength="30"
-                  placeholder="用户名"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input v-model="form.userPwd"
-                  maxlength="30"
-                  placeholder="密码"
-                  show-password></el-input>
-      </el-form-item>
-      <el-form-item>
-        <div class="code-item">
-          <el-input class="code-input"
-                    v-model="form.authCode"
+  <section>
+    <el-button class="login-submit"
+               type="primary"
+               @click="logout">
+      退出登录 </el-button>
+    <el-card class="index-card"
+             shadow="always">
+      <h3 class="title"> 登录 </h3>
+      <el-form :model="form">
+        <el-form-item>
+          <el-input v-model="form.username"
                     maxlength="30"
-                    placeholder="验证码"
+                    placeholder="用户名"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="form.userPwd"
+                    maxlength="30"
+                    placeholder="密码"
                     show-password></el-input>
-          <el-button class="send-btn"
-                     @click="sendCode">发送验证码</el-button>
-        </div>
-      </el-form-item>
-      <el-button class="login-submit"
-                 type="primary"
-                 @click="submit">
-        登录 </el-button>
-      <el-button class="login-submit"
-                 type="primary"
-                 @click="logout">
-        退出登录 </el-button>
+        </el-form-item>
+        <el-form-item>
+          <div class="code-item">
+            <el-input class="code-input"
+                      v-model="form.authCode"
+                      maxlength="30"
+                      placeholder="验证码"
+                      show-password></el-input>
+            <el-button class="send-btn"
+                       @click="sendCode">发送验证码</el-button>
+          </div>
+        </el-form-item>
+        <el-button class="login-submit"
+                   type="primary"
+                   @click="submit">
+          登录 </el-button>
 
-      <div class="footer">
-        <span class="opacity-btn"
-              @click="authorLogin">
-          <img class="btn-img"
-               src="https://account.cnblogs.com/assets/img/oauth/GitHub.png" />
-        </span>
-      </div>
-    </el-form>
-  </el-card>
+        <div class="footer">
+          <span class="opacity-btn"
+                @click="authorLogin">
+            <img class="btn-img"
+                 src="https://account.cnblogs.com/assets/img/oauth/GitHub.png" />
+          </span>
+        </div>
+      </el-form>
+    </el-card>
+  </section>
 </template>
 
 <script>
 import { sendCode, sso, ssoLogout } from '@/apis/index'
-import axios from 'axios'
+import { socket } from '@/utils/websocket'
 
 export default {
   name: 'Login',
@@ -67,10 +69,22 @@ export default {
       }
     }
   },
+  mounted () {
+    socket.init()
+  },
+  beforeDestroy () {
+    socket.wsDestroy()
+  },
   methods: {
     submit () {
       // sso()
-      window.location.href = "http://localhost:1112/hello"
+      // window.location.href = "http://localhost:1112/hello"
+      window.open("http://localhost:1112/toLogin", "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
+
+
+      // 父子窗口通信
+      this.$registerMessage(this.getMessage)
+
       // this.$router.push("/login")
       // if (this.form.username.length < 4) {
       //   ElMessage.warning("用户名长度至少 4 位")
@@ -100,7 +114,15 @@ export default {
       //   })
     },
     logout () {
-      ssoLogout()
+      ssoLogout().then((res) => {
+        console.log('res: ', res)
+      })
+      // window.open("http://localhost:1112/api/logout", "name", "height=0, width=0, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
+
+      // if (window != null) {
+      //   window.opener.close()
+      // }
+      // axios.get("http://localhost:1112/logout")
     },
     sendCode: function () {
       const params = {

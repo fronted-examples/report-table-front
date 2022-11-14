@@ -156,16 +156,17 @@ export const getToken = (params) => {
   })
 }
 
-export const sso = () => {
+
+export const getCurrentUser = () => {
   return request({
-    url: "/sso/hello",
+    url: "/sso/getCurrentUser",
     method: 'get'
   })
 }
 
 export const ssoLogout = () => {
   return request({
-    url: "/sso/authLogout",
+    url: "/sso/api/logout",
     method: 'get'
   })
 }

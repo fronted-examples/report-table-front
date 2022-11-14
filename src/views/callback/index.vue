@@ -1,6 +1,6 @@
 <script>
 // 第三方登录获取token，并通知登录页进行接下来的操作
-import { getToken } from '@/apis/index'
+import { getCurrentUser, getToken } from '@/apis/index'
 
 export default {
   data: function () {
@@ -13,6 +13,10 @@ export default {
     this.state = this.$route.query.state
 
     if (this.code) {
+      this.authorizeLogin()
+    }
+
+    if (this.state === "sso") {
       this.ssoLogin()
     }
   },
@@ -27,7 +31,7 @@ export default {
     /**
      * 第三方授权登录
      */
-    ssoLogin: function () {
+    authorizeLogin: function () {
       const params = {
         code: this.code,
         grant_type: "authorization_code",
@@ -39,6 +43,13 @@ export default {
       getToken(params).then((res) => {
         window.close()
         console.log('res: ', res)
+        this.$sendMessage(res, window.location.origin)
+      })
+    },
+    ssoLogin () {
+      getCurrentUser().then((res) => {
+        window.close()
+        console.log('获取单点登录：', res)
         this.$sendMessage(res, window.location.origin)
       })
     }
