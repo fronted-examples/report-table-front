@@ -1,6 +1,6 @@
 <script>
 // 第三方登录获取token，并通知登录页进行接下来的操作
-import { getCurrentUser, getToken } from '@/apis/index'
+import { getToken, getSession } from '@/apis/index'
 
 export default {
   data: function () {
@@ -47,9 +47,9 @@ export default {
       })
     },
     ssoLogin () {
-      getCurrentUser().then((res) => {
+      getSession().then((res) => {
+        console.log('获取session: ', res)
         window.close()
-        console.log('获取单点登录：', res)
         this.$sendMessage(res, window.location.origin)
       })
     }

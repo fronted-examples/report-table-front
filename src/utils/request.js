@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '@/router/index'
 import { Message } from 'element-ui'
 
 /**
@@ -101,13 +102,28 @@ service.interceptors.response.use(
     return data
   },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject(error)
+    console.log('err>>>' + error) // for debug
+    // we can't seem to catch the 302 status code as an error,
+    // however, since it redirects to another domain (login.microsoftonline.com) it causes
+    // a CORS error which makes error.response be undefined here.  This assumes that any time
+    // error.response is undefined that we need to redirect to the login page
+    if (typeof error.response === 'undefined') {
+      console.log('$router: ', router)
+      router.replace("/").then(() => {
+        Message({
+          message: "登录过期",
+          type: 'error',
+          duration: 5 * 1000
+        })
+      })
+    } else {
+      Message({
+        message: error.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(error)
+    }
   }
 )
 

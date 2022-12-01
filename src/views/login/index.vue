@@ -70,7 +70,7 @@ export default {
     }
   },
   mounted () {
-    socket.init()
+    // socket.init()
   },
   beforeDestroy () {
     socket.wsDestroy()
@@ -79,7 +79,7 @@ export default {
     submit () {
       // sso()
       // window.location.href = "http://localhost:1112/hello"
-      window.open("http://localhost:1112/toLogin", "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
+      window.open("http://localhost:1112/toLogin?url=http://localhost:8080/callback?state=sso", "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
 
 
       // 父子窗口通信

@@ -156,6 +156,12 @@ export const getToken = (params) => {
   })
 }
 
+export const getSession = () => {
+  return request({
+    url: "/sso/getSession",
+    method: 'get'
+  })
+}
 
 export const getCurrentUser = () => {
   return request({
@@ -170,3 +176,4 @@ export const ssoLogout = () => {
     method: 'get'
   })
 }
+
