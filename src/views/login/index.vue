@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { sendCode, sso, ssoLogout } from '@/apis/index'
+import { sendCode, ssoLogout, toLogin } from '@/apis/index'
 import { socket } from '@/utils/websocket'
 
 export default {
@@ -77,13 +77,26 @@ export default {
   },
   methods: {
     submit () {
-      // sso()
-      // window.location.href = "http://localhost:1112/hello"
-      window.open("http://localhost:1112/toLogin?url=http://localhost:8080/callback?state=sso", "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
+      toLogin().then((res) => {
+        const { data } = res
+
+
+        console.log('res >>> ', data)
+
+        if (data.code === 401) {
+          const { location } = data.data
+          window.open(location, "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
+
+          // 父子窗口通信
+          this.$registerMessage(this.getMessage)
+        }
+      })
+      // window.location.href = "http://localhost:1112/toLogin?url=http://localhost:8080/callback?state=sso"
+      // window.open("http://localhost:1112/toLogin?url=http://localhost:8080/callback?state=sso", "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
 
 
       // 父子窗口通信
-      this.$registerMessage(this.getMessage)
+      // this.$registerMessage(this.getMessage)
 
       // this.$router.push("/login")
       // if (this.form.username.length < 4) {

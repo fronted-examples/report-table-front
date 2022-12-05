@@ -6,7 +6,7 @@ export default {
     }
   },
   beforeDestroy () {
-    this.$destoryMessage(this.func)
+    this.$destroyMessage(this.func)
   },
   methods: {
     /**
@@ -19,7 +19,7 @@ export default {
     /**
      * 销毁窗口通信事件
      */
-    $destoryMessage: function (func) {
+    $destroyMessage: function (func) {
       window.removeEventListener('message', func)
     },
     /**

@@ -1,6 +1,9 @@
 import axios from 'axios'
-import router from '@/router/index'
 import { Message } from 'element-ui'
+import { windowOpen } from '@/apis/index'
+import router from '@/router/index'
+
+const WHITE_LISTS = ['/sso/toLogin', '/sso/api/logout']
 
 /**
  * 控制请求重试
@@ -57,6 +60,8 @@ const service = axios.create({
 
 service.defaults.withCredentials = true
 
+service.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+
 // 请求拦截器
 service.interceptors.request.use(
   config => {
@@ -102,20 +107,27 @@ service.interceptors.response.use(
     return data
   },
   error => {
-    console.log('err>>>' + error) // for debug
+    console.log('err>>>', error.response) // for debug
     // we can't seem to catch the 302 status code as an error,
     // however, since it redirects to another domain (login.microsoftonline.com) it causes
     // a CORS error which makes error.response be undefined here.  This assumes that any time
     // error.response is undefined that we need to redirect to the login page
-    if (typeof error.response === 'undefined') {
-      console.log('$router: ', router)
+    if (401 === error.response.status) {
+      const { config } = error.response
+      // const { data } = error.response.data
+      // windowOpen(data.location)
       router.replace("/").then(() => {
-        Message({
-          message: "登录过期",
-          type: 'error',
-          duration: 5 * 1000
-        })
+        if (!WHITE_LISTS.includes(config.url)) {
+          Message({
+            message: "登录过期",
+            type: 'error',
+            duration: 5 * 1000
+          })
+        }
       })
+
+      // 401为未登录或者登录过期，需要把响应数据抛给then
+      return Promise.resolve(error.response)
     } else {
       Message({
         message: error.message,

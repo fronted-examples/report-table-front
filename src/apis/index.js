@@ -1,4 +1,5 @@
 import request from "@/utils/request"
+import Mixin from '@/mixins/index'
 
 export const getTables = (params, data) => {
   return request({
@@ -156,6 +157,13 @@ export const getToken = (params) => {
   })
 }
 
+export const toLogin = () => {
+  return request({
+    url: "/sso/toLogin",
+    method: 'get'
+  })
+}
+
 export const getSession = () => {
   return request({
     url: "/sso/getSession",
@@ -176,4 +184,3 @@ export const ssoLogout = () => {
     method: 'get'
   })
 }
-

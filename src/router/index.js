@@ -17,6 +17,18 @@ import ReportPreview from '@/views/report-preview/index'
 import BookReader from '@/views/book-reader/index'
 import TableManage from "@/views/table-manage/index"
 
+//获取原型对象上的push函数
+const original_replace = Router.prototype.replace
+const original_push = Router.prototype.push
+//修改原型对象中的replace方法
+Router.prototype.replace = function replace (location) {
+  return original_replace.call(this, location).catch(err => err)
+}
+//修改原型对象中的push方法
+Router.prototype.push = function replace (location) {
+  return original_push.call(this, location).catch(err => err)
+}
+
 Vue.use(Router)
 
 export default new Router({

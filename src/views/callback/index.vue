@@ -12,11 +12,13 @@ export default {
     this.code = this.$route.query.code
     this.state = this.$route.query.state
 
+    console.log('进入callback: ', this.$route)
+
     if (this.code) {
       this.authorizeLogin()
     }
 
-    if (this.state === "sso") {
+    if (this.state === "ssoSuccess") {
       this.ssoLogin()
     }
   },
