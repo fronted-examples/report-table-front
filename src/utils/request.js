@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import { windowOpen } from '@/apis/index'
 import router from '@/router/index'
 
@@ -114,17 +114,30 @@ service.interceptors.response.use(
     // error.response is undefined that we need to redirect to the login page
     if (401 === error.response.status) {
       const { config } = error.response
-      // const { data } = error.response.data
-      // windowOpen(data.location)
-      router.replace("/").then(() => {
-        if (!WHITE_LISTS.includes(config.url)) {
-          Message({
-            message: "登录过期",
-            type: 'error',
-            duration: 5 * 1000
+
+      if (!WHITE_LISTS.includes(config.url)) {
+        MessageBox.confirm('登录过期，是否重新登录？', '确认信息', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '确 认',
+          cancelButtonText: '取 消'
+        })
+          .then(() => {
+            router.replace("/").then(() => {
+              Message({
+                message: "退出成功",
+                type: 'success',
+                duration: 5 * 1000
+              })
+            })
           })
-        }
-      })
+          .catch(action => {
+            Message({
+              message: "已取消",
+              type: 'info',
+              duration: 5 * 1000
+            })
+          })
+      }
 
       // 401为未登录或者登录过期，需要把响应数据抛给then
       return Promise.resolve(error.response)

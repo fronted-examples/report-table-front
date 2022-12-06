@@ -21,6 +21,11 @@ export default {
     if (this.state === "ssoSuccess") {
       this.ssoLogin()
     }
+
+    if (this.state === "ssoFail") {
+      window.close()
+      this.$sendMessage("取消登录", window.location.origin, 'reject')
+    }
   },
   // 手动调用render函数，不渲染任何元素
   render: function (h) {

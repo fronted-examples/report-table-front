@@ -164,11 +164,21 @@ export default {
         this.$router.push("/home")
       })
     },
-    getMessage (message) {
-      console.log('update: ', message.data)
-      this.$router.push({
-        name: "StatisticsYears"
-      })
+    getMessage (data) {
+      const { data: { message, type } } = data
+
+
+      console.log('update: ', data, message, type)
+
+      if (type === 'reject') {
+        this.$message.info(message)
+      }
+
+      if (type !== 'reject') {
+        this.$router.push({
+          name: "StatisticsYears"
+        })
+      }
     }
   }
 }

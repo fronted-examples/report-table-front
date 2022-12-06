@@ -24,9 +24,12 @@ export default {
     },
     /**
      * 窗口间发消息
+     * postMessage最多接收两个参数，
+     * 一个是 MessageEvent, 另一个是window.location.origin
      */
-    $sendMessage: function (message, href) {
-      window.opener.postMessage(message, href)
+    $sendMessage: function (message, href, type) {
+      // window.opener.postMessage([message, type], href)
+      window.opener.postMessage({ message, type }, href)
     }
   }
 }
