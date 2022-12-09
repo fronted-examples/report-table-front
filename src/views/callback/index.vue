@@ -40,12 +40,7 @@ export default {
      */
     authorizeLogin: function () {
       const params = {
-        code: this.code,
-        grant_type: "authorization_code",
-        redirect_uri: "http://localhost:8080/callback",
-        scope: "custom",
-        client_id: "client3",
-        client_secret: "123456"
+        code: this.code
       }
       getToken(params).then((res) => {
         window.close()

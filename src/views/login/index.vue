@@ -59,13 +59,6 @@ export default {
         username: "",
         password: "",
         authCode: ""
-      },
-      sso: {
-        url: "http://localhost:8001/author/oauth/authorize",
-        redirect_uri: "http://localhost:8080/callback",
-        client_id: "client3",
-        response_type: "code",
-        scope: "profile"
       }
     }
   },
@@ -144,7 +137,7 @@ export default {
       sendCode(params).then()
     },
     authorLogin () {
-      let href = `${this.sso.url}?client_id=${this.sso.client_id}&redirect_uri=${this.sso.redirect_uri}&response_type=${this.sso.response_type}&scope=${this.sso.scope}`
+      let href = `${this.auth_params.url}?client_id=${this.auth_params.client_id}&redirect_uri=${this.auth_params.redirect_uri}&response_type=${this.auth_params.response_type}&scope=${this.auth_params.scope}`
 
       let otherWindow = window.open(href, "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
 

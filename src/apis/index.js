@@ -1,5 +1,5 @@
 import request from "@/utils/request"
-import Mixin from '@/mixins/index'
+import { AUTH_PARAMS, AUTH_LOGIN_PARAMS } from '@/utils/authUtil'
 
 export const getTables = (params, data) => {
   return request({
@@ -150,6 +150,7 @@ export const sendCode = (params) => {
 }
 
 export const getToken = (params) => {
+  params = Object.assign(params, AUTH_LOGIN_PARAMS)
   return request({
     url: "/author/auth/token",
     method: 'post',
