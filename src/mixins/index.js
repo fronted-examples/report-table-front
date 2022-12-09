@@ -29,7 +29,12 @@ export default {
      */
     $sendMessage: function (message, href, type) {
       // window.opener.postMessage([message, type], href)
-      window.opener.postMessage({ message, type }, href)
+      const params = {
+        message,
+        type: type ? type : 'success'
+      }
+
+      window.opener.postMessage(params, href)
     }
   }
 }

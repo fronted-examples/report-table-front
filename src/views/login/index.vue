@@ -65,7 +65,7 @@ export default {
         redirect_uri: "http://localhost:8080/callback",
         client_id: "client3",
         response_type: "code",
-        scope: "custom"
+        scope: "profile"
       }
     }
   },
@@ -170,11 +170,11 @@ export default {
 
       console.log('update: ', data, message, type)
 
-      if (type === 'reject') {
+      if (type !== 'success') {
         this.$message.info(message)
       }
 
-      if (type !== 'reject') {
+      if (type === 'success') {
         this.$router.push({
           name: "StatisticsYears"
         })
