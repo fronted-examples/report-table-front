@@ -48,6 +48,8 @@ export default {
             duration: 3000
           })
         })
+      }, error => {
+        console.log("连接失败：", error)
       })
     },
     disconnect: function () {
