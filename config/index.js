@@ -32,6 +32,13 @@ module.exports = {
         pathRewrite: {
           "^/sso": "" //表示需要rewrite重写路径
         }
+      },
+      "/client2": {
+        target: "http://localhost:1113",
+        changeOrigin: true, // 是否跨域，如果接口跨域，需要进行这个参数配置
+        pathRewrite: {
+          "^/client2": "" //表示需要rewrite重写路径
+        }
       }
     },
 
