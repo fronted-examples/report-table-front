@@ -11,8 +11,7 @@
         <i :class="menu.icon"></i>
         <span>{{ menu.label }}</span>
       </template>
-      <el-menu-item-group
-                          v-if="menu.children.length">
+      <el-menu-item-group v-if="menu.children.length">
         <el-menu-item :index="(childIndex + 1).toString()"
                       v-for="(child, childIndex) in menu.children"
                       @click.native.stop="toTarget(child)"
@@ -71,6 +70,18 @@ export default {
           label: "统计年鉴",
           icon: "el-icon-user",
           name: 'StatisticsYears'
+        }, {
+          label: '即时通讯',
+          icon: 'el-icon-user',
+          name: 'MessageChat'
+        }, {
+          label: '单人聊天',
+          icon: 'el-icon-user',
+          name: 'SingleChat'
+        }, {
+          label: 'jvm负载',
+          icon: 'el-icon-user',
+          name: 'JvmLoad'
         }]
       }, {
         label: '图书管理',

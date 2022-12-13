@@ -17,6 +17,10 @@ import ReportPreview from '@/views/report-preview/index'
 import BookReader from '@/views/book-reader/index'
 import TableManage from "@/views/table-manage/index"
 
+import MessageChat from '@/views/message-chat/index'
+import SingleChat from '@/views/single-chat/index'
+import JvmLoad from '@/views/jvm-load/index'
+
 //获取原型对象上的push函数
 const original_replace = Router.prototype.replace
 const original_push = Router.prototype.push
@@ -69,6 +73,21 @@ export default new Router({
           path: "table-detail",
           name: "TableDetail",
           component: TableDetail
+        },
+        {
+          path: 'message-chat',
+          name: 'MessageChat',
+          component: MessageChat
+        },
+        {
+          path: 'single-chat',
+          name: 'SingleChat',
+          component: SingleChat
+        },
+        {
+          path: 'jvm-load',
+          name: 'JvmLoad',
+          component: JvmLoad
         }
       ]
     },
