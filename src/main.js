@@ -13,14 +13,14 @@ import "element-ui/lib/theme-chalk/index.css"
 
 import Templates from "@/templates/index"
 
-import Mixin from './mixins/index'
+import IndexMixin from './mixins/index'
 
 import "@/assets/css/index.scss"
 
 Vue.config.productionTip = false
 
 
-Vue.mixin(Mixin)
+Vue.mixin(IndexMixin)
 
 Vue.use(ElementUI)
 Vue.use(CodeMirror)

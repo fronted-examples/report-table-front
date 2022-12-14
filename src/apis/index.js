@@ -185,3 +185,11 @@ export const ssoLogout = () => {
     method: 'get'
   })
 }
+
+export const sendSingle = (data) => {
+  return request({
+    url: '/sso/instant/chat/single',
+    method: 'post',
+    data
+  })
+}

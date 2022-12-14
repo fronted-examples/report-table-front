@@ -13,7 +13,7 @@ export default {
     }
   },
   mounted () {
-    this.initWebSocket()
+    // this.initWebSocket()
   },
   beforeDestroy () {
     // 页面离开时断开连接

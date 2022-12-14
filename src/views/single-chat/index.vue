@@ -25,6 +25,8 @@
 import SockJS from 'sockjs-client/dist/sockjs.min.js'
 import Stomp from 'stompjs'
 
+import { sendSingle } from '@/apis/index'
+
 export default {
   data () {
     return {
@@ -39,7 +41,7 @@ export default {
       this.stompClient = Stomp.over(socket)           //用stom进行包装，规范协议
       this.stompClient.connect({}, (frame) => {
         this.$message.success('单人聊天: ' + frame)
-        this.stompClient.subscribe('/chat/single/' + this.from, (result) => {
+        this.stompClient.subscribe(`/queue/${this.to}/single`, (result) => {
           console.info("result=" + result)
           this.showContent(JSON.parse(result.body))
         })
@@ -49,7 +51,14 @@ export default {
     },
     send () {
       var message = document.getElementById('text').value
-      this.stompClient.send("/app/v3/single/chat", {}, JSON.stringify({ 'content': message, 'to': this.to, 'from': this.from }))
+      const params = {
+        content: message,
+        sender: this.from,
+        toUser: this.to
+      }
+
+      sendSingle(params)
+      // this.stompClient.send("/app/v3/single/chat", {}, JSON.stringify({ 'content': message, 'to': this.to, 'from': this.from }))
     },
     //显示内容
     showContent (body) {

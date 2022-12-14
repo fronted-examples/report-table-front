@@ -1,9 +1,12 @@
 import { AUTH_PARAMS, AUTH_LOGIN_PARAMS } from '@/utils/authUtil'
+import SockJS from 'sockjs-client/dist/sockjs.min.js'
+import Stomp from 'stompjs'
 
 export default {
   data: function () {
     return {
       func: null,
+      stompClient: null,
       // $auth_params会把属性放到$data中，对应组件不能直接使用this.$auth_params获取数据
       auth_params: AUTH_PARAMS,
       auth_login_params: AUTH_LOGIN_PARAMS
