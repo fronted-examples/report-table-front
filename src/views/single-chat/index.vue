@@ -1,18 +1,13 @@
 <template>
   <div>
-    <input type="text"
-           id="from"
-           class="form-control"
-           v-model="from"
+    <input type="text" id="from"
+           class="form-control" v-model="from"
            placeholder="我是">
-    <input type="text"
-           id="to"
-           v-model="to"
+    <input type="text" id="to" v-model="to"
            class="form-control"
            placeholder="发送给谁">
     内容
-    <input id="text"
-           type="text"
+    <input id="text" type="text"
            style="width:500px" />
     <button @click="send">发送消息</button>
     <button @click="connect">建立连接</button>
@@ -68,6 +63,7 @@ export default {
     disconnect () {
       if (this.stompClient !== null) {
         this.stompClient.disconnect()
+        this.stompClient = null
         this.$message.success('释放连接成功')
       } else {
         this.$message.error('释放连接失败')
