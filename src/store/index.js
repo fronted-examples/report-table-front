@@ -3,6 +3,7 @@ import Vue from 'vue'
 import createPersistedState from "vuex-persistedstate"
 
 import user from './user/index'
+import app from './app/index'
 
 Vue.use(Vuex)
 
@@ -13,11 +14,18 @@ const userPersistedState = createPersistedState({
   paths: ['user'] // 存储的指定的模块的名字（存储某个模块对象）
 })
 
-const store = Vuex.Store({
+const appPersistedState = createPersistedState({
+  key: 'app',
+  storage: window.sessionStorage, // 修改存储的状态
+  paths: ['app'] // 存储的指定的模块的名字（存储某个模块对象）
+})
+
+const store = new Vuex.Store({
   modules: {
-    user
+    user,
+    app
   },
-  plugins: [userPersistedState] // 状态持久化
+  plugins: [userPersistedState, appPersistedState] // 状态持久化
 })
 
 export default store

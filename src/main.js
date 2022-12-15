@@ -18,6 +18,8 @@ import IndexMixin from './mixins/index'
 
 import "@/assets/css/index.scss"
 
+import './router-guard' // 前端控制访问权限
+
 Vue.config.productionTip = false
 
 

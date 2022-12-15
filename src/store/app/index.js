@@ -3,7 +3,7 @@ import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
 
-const user = {
+const app = {
   namespaced: true,
   state: states,
   mutations: mutations,
@@ -11,4 +11,4 @@ const user = {
   getters: getters
 }
 
-export default user
+export default app

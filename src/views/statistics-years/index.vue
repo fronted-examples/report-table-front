@@ -1,5 +1,5 @@
 <template>
-
+  <as-button type="success">信息按钮</as-button>
 </template>
 <script>
 import SockJS from 'sockjs-client/dist/sockjs.min.js'
