@@ -50,6 +50,7 @@
 <script>
 import { sendCode, ssoLogout, toLogin } from '@/apis/index'
 import { socket } from '@/utils/websocket'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Login',
@@ -69,6 +70,9 @@ export default {
     socket.wsDestroy()
   },
   methods: {
+    ...mapActions({
+      updateUser: 'user/updateUser'
+    }),
     submit () {
       toLogin().then((res) => {
         const { data } = res
@@ -84,51 +88,11 @@ export default {
           this.$registerMessage(this.getMessage)
         }
       })
-      // window.location.href = "http://localhost:1112/toLogin?url=http://localhost:8080/callback?state=sso"
-      // window.open("http://localhost:1112/toLogin?url=http://localhost:8080/callback?state=sso", "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
-
-
-      // 父子窗口通信
-      // this.$registerMessage(this.getMessage)
-
-      // this.$router.push("/login")
-      // if (this.form.username.length < 4) {
-      //   ElMessage.warning("用户名长度至少 4 位")
-      //   return
-      // }
-      // if (this.form.userPwd.length < 6) {
-      //   ElMessage.warning("密码长度至少 6 位")
-      //   return
-      // }
-
-      // // 直接向后端请求，后端传入参数为 null，需要通过 qs 进行对象解析传递
-      // let loginData = {
-      //   username: this.form.username,
-      //   password: this.form.userPwd
-      // }
-      // axios.post('/api/login', qs.stringify(loginData))
-      //   .then(response => {
-      //     if (response.data.statusCode == 1000 && response.data.statusCode == 1001) {
-      //       ElMessage.success("登录成功")
-      //     } else {
-      //       ElMessage.error(response.data.statusMsg)
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     ElMessage.error("未知错误")
-      //     console.log(error)
-      //   })
     },
     logout () {
       ssoLogout().then((res) => {
         console.log('res: ', res)
       })
-      // window.open("http://localhost:1112/api/logout", "name", "height=0, width=0, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
-
-      // if (window != null) {
-      //   window.opener.close()
-      // }
-      // axios.get("http://localhost:1112/logout")
     },
     sendCode: function () {
       const params = {
@@ -139,7 +103,7 @@ export default {
     authorLogin () {
       let href = `${this.auth_params.url}?client_id=${this.auth_params.client_id}&redirect_uri=${this.auth_params.redirect_uri}&response_type=${this.auth_params.response_type}&scope=${this.auth_params.scope}`
 
-      let otherWindow = window.open(href, "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
+      window.open(href, "name", "height=454, width=525, top=250, left=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
 
       // 父子窗口通信
       this.$registerMessage(this.getMessage)
@@ -168,6 +132,7 @@ export default {
       }
 
       if (type === 'success') {
+        this.updateUser(message.data)
         this.$router.push({
           name: "StatisticsYears"
         })
